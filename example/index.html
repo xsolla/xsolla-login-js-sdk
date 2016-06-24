@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript" src="xl.js"></script>
+</head>
+<body>
+<script type="application/javascript">
+    document.onload = function () {
+
+    };
+
+
+</script>
+
+<form data-xl-auth="form-login_pass">
+    <input type="text" data-xl-auth="login">
+    <input type="text" data-xl-auth="pass">
+    <input type="submit">
+</form>
+
+<form data-xl-auth="form-sms">
+    <input type="text" data-xl-auth="sms">
+    <input type="submit">
+</form>
+
+<div data-xl-auth="sn-facebook" onclick="facebookAuth()">Facebook</div>
+
+<script type="application/javascript" >
+    var xl = new XL({});
+
+    function facebookAuth() {
+        xl.login({
+            authType: 'sn-facebook'
+        });
+    }
+//    XL.init({});
+//
+//    // Add an event listener
+//    document.addEventListener("xl-event", function(e) {
+//        console.log(e.detail); // Prints "Example of an event"
+//    });
+
+</script>
+
+</body>
+</html>

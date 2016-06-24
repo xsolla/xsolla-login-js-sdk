@@ -15,6 +15,7 @@
         appId: undefined,
         shouldDisplayWidget: false,
         winName: "_blank",
+        //Handlrers for different auth types. Can be overriden
         eventHandlers: {
             loginPass: function (e) {
                 e.preventDefault();
@@ -79,6 +80,34 @@
         }
     };
 
+    /**
+     * Performs login
+     * @param prop
+     * @param onSuccess
+     * @param onFailed
+     */
+    XL.login = function(prop, onSuccess, onFailed) {
+
+        if (!prop) {
+            return;
+        }
+        /**
+         * props
+         * authType: sn-<social name>, login-pass, sms
+         */
+
+        if (prop.authType) {
+            if (prop.authType.startsWith('sn-')) {
+                window.open(socialUrls[prop.authType]);
+            }
+        }
+    };
+
+    /**
+     * Cross browsers implementation of document.querySelectorAll
+     * @param attribute
+     * @returns {Array}
+     */
     function getAllElementsWithAttribute(attribute)
     {
         var matchingElements = [];
@@ -94,7 +123,11 @@
     }
 
 
-
+    /**
+     * Impelements Xsolla Login Api
+     * @param projectId - project's unique identifier
+     * @constructor
+     */
     var XLApi = function (projectId) {
         var self = this;
         this.baseUrl = 'https://login.xsolla.com/';
@@ -114,6 +147,11 @@
             r.send(params.getArguments);
         };
     };
+    /**
+     * Get all avialable social methods auth url
+     * @param success - success callback
+     * @param error - error callback
+     */
     XLApi.prototype.getSocialsURLs = function (success, error) {
         return this.makeApiCall({method: 'GET', endpoint: 'socials', getArguments: ''}, success, error);
     };
@@ -121,4 +159,9 @@
     if(!window.XL) {
         window.XL = XL;
     }
+    
+    if (!window.XLApi) {
+        window.XLApi = XLApi;
+    }
+    
 })();

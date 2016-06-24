@@ -1,50 +1,94 @@
 /**
  * Created by a.korotaev on 14.06.16.
  */
-var lr = require('tiny-lr');
+
 var gulp = require('gulp');
-var serve = require('gulp-serve');
-var connect = require('connect');
-var livereload = require('gulp-livereload');
-var concat = require('gulp-concat');
-var server = lr();
+var gutil = require('gulp-util');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var sourcemaps = require('gulp-sourcemaps');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var browserSync = require('browser-sync');
+var browserify = require('browserify');
+var sassify = require('sassify');
+var stringify = require('stringify');
+var watchify = require('watchify');
+var gulpif = require('gulp-if');
 
+function setupBrowserify(watch) {
+    var bundleOptions = {
+        cache: {},
+        packageCache: {},
+        paths: ['./src'],
+        standalone: 'XL',
+        fullPaths: false,
+        debug: true
+    };
+    var bundler = browserify('./src/main.js', bundleOptions);
+    bundler.require('./src/main.js', {entry: true, expose: 'main'});
+    // bundler.transform({
+    //     outputStyle: 'compressed',
+    //     base64Encode: false,
+    //     'auto-inject': true
+    // }, sassify);
 
-gulp.task('js', function () {
-    return gulp.src(jsPaths)
-        .pipe(concat('currency-format.js'))
-        .pipe(replace('@@includeJSON', includeJSON))
-        .pipe(traceur())
-        .pipe(gulp.dest('.tmp/bower_components/angular-currency-format/dist/'));
+    // bundler.transform(stringify({
+    //     extensions: ['.svg'],
+    //     minify: true,
+    //     minifier: {
+    //         extensions: ['.svg'],
+    //         options: {
+    //             removeComments: true,
+    //             removeCommentsFromCDATA: true,
+    //             removeCDATASectionsFromCDATA: true,
+    //             collapseWhitespace: true
+    //         }
+    //     }
+    // }));
+
+    if (watch) {
+        bundler = watchify(bundler);
+        bundler.on('update', function () {  // on any dep update, runs the bundler
+            runBundle(bundler, watch);
+        });
+    }
+
+    runBundle(bundler, watch);
+}
+
+function runBundle(bundler, watch) {
+    return bundler.bundle()
+    // log errors if they happen
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+        .pipe(source('xl.js'))
+        .pipe(gulp.dest('./dist'))
+        .pipe(buffer())
+        .pipe(rename('xl.min.js'))
+        .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+        .pipe(uglify())
+        .pipe(sourcemaps.write('./', {includeContent: true, sourceRoot: '.', debug: false})) // writes .map file
+        .pipe(gulp.dest('./dist'))
+        .pipe(gulpif(watch, browserSync.reload({stream: true, once: true})));
+}
+
+gulp.task('build', function () {
+    setupBrowserify(false);
 });
 
-gulp.task('html', function () {
-    return gulp.src('src/index.html')
-        .pipe(gulp.dest('.tmp/'));
+gulp.task('browser-sync', function () {
+    browserSync({
+        startPath: '/index.html',
+        server: {
+            baseDir: ['example', 'dist']
+        },
+        port: 3100,
+        ghostMode: false
+    });
 });
 
-// gulp.task('work', function () {
-//
-// });
-//
-// // Собираем JS
-// gulp.task('js', function() {
-//     gulp.src(['./src/js/**/*.js'])
-//         .pipe(concat('xsolla-login.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
-//         .pipe(gulp.dest('./public/js'))
-//         .pipe(livereload(server)); // даем команду на перезагрузку страницы
-// });
-//
-// gulp.task('html', function() {
-//     gulp.src(['./src/**/*.html'])
-//         .pipe();
-// });
-//
-// gulp.task('http-server', function() {
-//     connect()
-//         .use(require('connect-livereload')())
-//         .use(connect.static('./public'))
-//         .listen('9000');
-//
-//     console.log('Server listening on http://localhost:9000');
-// });
+gulp.task('serve', ['browser-sync'], function () {
+    setupBrowserify(true);
+
+    gulp.watch(['example/*.html']).on('change', browserSync.reload); //all the other files are managed by watchify
+});
