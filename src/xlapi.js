@@ -38,4 +38,8 @@ XLApi.prototype.loginPassAuth = function (login, pass, success, error) {
     return this.makeApiCall({method: 'GET', endpoint: 'loginpass', getArguments: 'login=' + login + '&pass=' + pass}, success, error);
 };
 
+XLApi.prototype.smsAuth = function (phoneNumber, success, error) {
+    return this.makeApiCall({method: 'GET', endpoint: 'sms', getArguments: 'phoneNumber=' + phoneNumber}, success, error);
+};
+
 module.exports = XLApi;

@@ -15,6 +15,8 @@ var sassify = require('sassify');
 var stringify = require('stringify');
 var watchify = require('watchify');
 var gulpif = require('gulp-if');
+var plumber = require('gulp-plumber');
+
 
 function setupBrowserify(watch) {
     var bundleOptions = {

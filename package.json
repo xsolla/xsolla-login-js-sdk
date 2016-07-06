@@ -15,8 +15,12 @@
     "bower": "1.4.1",
     "browser-sync": "2.7.13",
     "browserify": "10.2.4",
+    "fs": "0.0.2",
     "gulp": "3.9.0",
+    "gulp-if": "1.2.5",
+    "gulp-plumber": "^1.1.0",
     "gulp-rename": "1.2.0",
+    "gulp-replace-task": "0.2.1",
     "gulp-sourcemaps": "1.5.2",
     "gulp-uglify": "1.2.0",
     "gulp-util": "3.0.6",
@@ -24,9 +28,6 @@
     "stringify": "3.1.0",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
-    "watchify": "3.2.3",
-    "gulp-if": "1.2.5",
-    "gulp-replace-task": "0.2.1",
-    "fs": "0.0.2"
+    "watchify": "3.2.3"
   }
 }

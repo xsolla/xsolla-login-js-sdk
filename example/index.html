@@ -14,9 +14,9 @@
 
 </script>
 
-<form data-xl-auth="form-login_pass">
-    <input type="text" data-xl-auth="login">
-    <input type="text" data-xl-auth="pass">
+<form data-xl-auth="form-login_pass" onsubmit="loginPass()">
+    <input type="text" data-xl-auth="input-login">
+    <input type="text" data-xl-auth="input-pass">
     <input type="submit">
 </form>
 
@@ -25,16 +25,27 @@
     <input type="submit">
 </form>
 
-<div data-xl-auth="sn-facebook" onclick="facebookAuth()">Facebook</div>
+<div onclick="facebookAuth()">Facebook</div>
+<div data-xl-auth="sn-facebook">Facebook marked</div>
 
 <script type="application/javascript" >
-    var xl = new XL({});
+    var xl = new XL({projectId: '6990d1b0-2e0e-11e6-a74d-a3b190baf7a5', addHandlers: true});
 
     function facebookAuth() {
         xl.login({
             authType: 'sn-facebook'
         });
     }
+
+    function loginPass(e) {
+        e.preventDefault();
+        xl.login({
+            authType: 'login-pass',
+            login: '',
+            pass: ''
+        });
+    }
+
 //    XL.init({});
 //
 //    // Add an event listener
