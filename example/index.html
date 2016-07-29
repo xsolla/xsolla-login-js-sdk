@@ -5,6 +5,11 @@
     <title>Title</title>
     <script type="application/javascript" src="xl.js"></script>
 </head>
+<style>
+    .social-link {
+        cursor: pointer;
+    }
+</style>
 <body>
 <script type="application/javascript">
     document.onload = function () {
@@ -25,8 +30,10 @@
     <input type="submit">
 </form>
 
-<div onclick="facebookAuth()">Facebook</div>
-<div data-xl-auth="sn-facebook">Facebook marked</div>
+<div class="social-link" onclick="facebookAuth()">Facebook</div>
+<div class="social-link" data-xl-auth="sn-facebook">Facebook marked</div>
+<div class="social-link" data-xl-auth="sn-vk">VK</div>
+
 
 <script type="application/javascript" >
     var xl = new XL({projectId: '6990d1b0-2e0e-11e6-a74d-a3b190baf7a5', addHandlers: true});

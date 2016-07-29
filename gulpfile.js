@@ -17,6 +17,7 @@ var watchify = require('watchify');
 var gulpif = require('gulp-if');
 var plumber = require('gulp-plumber');
 
+var Server = require('karma').Server;
 
 function setupBrowserify(watch) {
     var bundleOptions = {
@@ -93,4 +94,14 @@ gulp.task('serve', ['browser-sync'], function () {
     setupBrowserify(true);
 
     gulp.watch(['example/*.html']).on('change', browserSync.reload); //all the other files are managed by watchify
+});
+
+/**
+ * Run test once and exit
+ */
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
 });

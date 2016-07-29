@@ -8,7 +8,7 @@
  */
 var XLApi = function (projectId) {
     var self = this;
-    this.baseUrl = 'https://login.xsolla.com/';
+    this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/social/';
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {
@@ -17,7 +17,8 @@ var XLApi = function (projectId) {
         r.onreadystatechange = function () {
             if (r.readyState != 4 || r.status != 200)
             {
-                error('error');
+                // console.error('Network error');
+                error('Network error');
                 return;
             }
             success(r.responseText);
@@ -31,7 +32,7 @@ var XLApi = function (projectId) {
  * @param error - error callback
  */
 XLApi.prototype.getSocialsURLs = function (success, error) {
-    return this.makeApiCall({method: 'GET', endpoint: 'socials', getArguments: ''}, success, error);
+    return this.makeApiCall({method: 'GET', endpoint: 'login_urls', getArguments: 'projectId='+this.projectId}, success, error);
 };
 
 XLApi.prototype.loginPassAuth = function (login, pass, success, error) {
