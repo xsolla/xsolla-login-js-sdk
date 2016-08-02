@@ -16,14 +16,21 @@ function XL (options) {
         return new XL(options);
     }
 
+    self._socialUrls = {};
+    self._errorHandler = options.errorHandler;
+
     self._api = new XLApi(options.projectId);
-    self._api.getSocialsURLs(function (e) {
-        self._socialUrls = value;
+    self._api.getSocialsURLs(function (response) {
+        for (key in response) {
+            self._socialUrls['sn-' + key] = response[key];
+        }
+
+        console.log(self._socialUrls);
     }, function (e) {
         console.error(e);
     });
 
-    self._socialUrls = {'sn-facebook': 'https://facebook.com', 'sn-vk': 'https://vk.com'};
+    // self._socialUrls = {'sn-facebook': 'https://facebook.com', 'sn-vk': 'https://vk.com'};
 
     if (options.addHandlers == true) {
         var elements = self.getAllElementsWithAttribute('data-xl-auth');
@@ -49,6 +56,15 @@ function XL (options) {
                             authType: 'login-pass',
                             login: login,
                             pass: pass
+                        }, function (res) {
+                            if (res.error) {
+                                if (self._errorHandler) {
+                                    self._errorHandler(res.error);
+                                }
+                            } else {
+                                //TODO: сделать редирект
+                                window.location.href = '';
+                            }
                         });
                     }
                 }(login, pass);
@@ -78,13 +94,13 @@ XL.prototype.login = function (prop, callback) {
         if (prop.authType.startsWith('sn-')) {
             var socialUrl = self._socialUrls[prop.authType];
             if (socialUrl != undefined) {
-                window.open(self._socialUrls[prop.authType]);
+                window.location.href = self._socialUrls[prop.authType];
             } else {
                 console.error('Auth type: ' + prop.authType + ' doesn\'t exist');
             }
 
         } else if (prop.authType == 'login-pass') {
-            self._api.loginPassAuth(prop.login, prop.pass, null, null);
+            self._api.loginPassAuth(prop.login, prop.pass, callback, callback);
         } else if (prop.authType == 'sms') {
             if (smsAuthStep == 'phone') {
                 self._api.smsAuth(prop.phoneNumber, null, null);

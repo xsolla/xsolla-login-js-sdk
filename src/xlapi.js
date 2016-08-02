@@ -8,20 +8,22 @@
  */
 var XLApi = function (projectId) {
     var self = this;
-    this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/social/';
+    this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/';
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {
+
+
         var r = new XMLHttpRequest();
         r.open(params.method, self.baseUrl + params.endpoint, true);
         r.onreadystatechange = function () {
-            if (r.readyState != 4 || r.status != 200)
-            {
-                // console.error('Network error');
-                error('Network error');
-                return;
+            if (r.readyState == 4) {
+                if (r.status == 200) {
+                    success(JSON.parse(r.responseText));
+                } else {
+                    error(JSON.parse(r.responseText));
+                }
             }
-            success(r.responseText);
         };
         r.send(params.getArguments);
     };
@@ -32,11 +34,15 @@ var XLApi = function (projectId) {
  * @param error - error callback
  */
 XLApi.prototype.getSocialsURLs = function (success, error) {
-    return this.makeApiCall({method: 'GET', endpoint: 'login_urls', getArguments: 'projectId='+this.projectId}, success, error);
+    return this.makeApiCall({method: 'GET', endpoint: 'social/login_urls?projectId='+this.projectId, getArguments: null}, success, error);
 };
 
 XLApi.prototype.loginPassAuth = function (login, pass, success, error) {
-    return this.makeApiCall({method: 'GET', endpoint: 'loginpass', getArguments: 'login=' + login + '&pass=' + pass}, success, error);
+    var body = {
+        username: login,
+        password: pass
+    };
+    return this.makeApiCall({method: 'POST', endpoint: 'proxy/login?projectId='+this.projectId, getArguments: JSON.stringify(body)}, success, error);
 };
 
 XLApi.prototype.smsAuth = function (phoneNumber, success, error) {

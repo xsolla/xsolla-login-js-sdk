@@ -6,6 +6,9 @@
     <script type="application/javascript" src="xl.js"></script>
 </head>
 <style>
+    body {
+        font-family: "Helvetic Neue", Helvetica, Arial;
+    }
     .social-link {
         cursor: pointer;
     }
@@ -19,24 +22,40 @@
 
 </script>
 
-<form data-xl-auth="form-login_pass" onsubmit="loginPass()">
-    <input type="text" data-xl-auth="input-login">
-    <input type="text" data-xl-auth="input-pass">
-    <input type="submit">
-</form>
+<div>
+    <div>Login (on submit): </div>
+    <form data-xl-auth="form-login_pass" onsubmit="loginPass()">
+        <input type="text" data-xl-auth="input-login">
+        <input type="password" data-xl-auth="input-pass">
+        <input type="submit">
+    </form>
+    <div>Login (market): </div>
+    <form data-xl-auth="form-login_pass">
+        <input type="text" data-xl-auth="input-login">
+        <input type="password" data-xl-auth="input-pass">
+        <input type="submit">
+    </form>
+</div>
 
-<form data-xl-auth="form-sms">
-    <input type="text" data-xl-auth="sms">
-    <input type="submit">
-</form>
+<div>
+    <div>SMS</div>
+    <form data-xl-auth="form-sms">
+        <input type="text" data-xl-auth="sms">
+        <input type="submit">
+    </form>
+</div>
+
 
 <div class="social-link" onclick="facebookAuth()">Facebook</div>
 <div class="social-link" data-xl-auth="sn-facebook">Facebook marked</div>
 <div class="social-link" data-xl-auth="sn-vk">VK</div>
+<div class="social-link" data-xl-auth="sn-google">Google</div>
 
 
 <script type="application/javascript" >
-    var xl = new XL({projectId: '6990d1b0-2e0e-11e6-a74d-a3b190baf7a5', addHandlers: true});
+    var xl = new XL({projectId: '36842cbb-5587-11e6-9f98-22000b158848', addHandlers: true, errorHandler: function (err) {
+        console.error('Error: ', err);
+    }});
 
     function facebookAuth() {
         xl.login({
