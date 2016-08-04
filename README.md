@@ -28,7 +28,9 @@ SDK supports following types of authorization:
   * LinkedIn
   * Twitter
   * VK
+
 ### Initializing
+
 Add the following script at the bottom of your login page.
 ```html
 <script type="application/javascript" >
