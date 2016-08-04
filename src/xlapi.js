@@ -8,7 +8,7 @@
  */
 var XLApi = function (projectId) {
     var self = this;
-    this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/';
+    this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/'; //http://test-login.xsolla.com/api/
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {
@@ -21,7 +21,12 @@ var XLApi = function (projectId) {
                 if (r.status == 200) {
                     success(JSON.parse(r.responseText));
                 } else {
-                    error(JSON.parse(r.responseText));
+                    if (r.responseText) {
+                        error(JSON.parse(r.responseText));
+                    } else {
+                        error({error: 'Error'});
+                    }
+
                 }
             }
         };

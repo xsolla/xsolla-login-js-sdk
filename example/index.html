@@ -37,14 +37,6 @@
     </form>
 </div>
 
-<div>
-    <div>SMS</div>
-    <form data-xl-auth="form-sms">
-        <input type="text" data-xl-auth="sms">
-        <input type="submit">
-    </form>
-</div>
-
 
 <div class="social-link" onclick="facebookAuth()">Facebook</div>
 <div class="social-link" data-xl-auth="sn-facebook">Facebook marked</div>
@@ -53,7 +45,7 @@
 
 
 <script type="application/javascript" >
-    var xl = new XL({projectId: '36842cbb-5587-11e6-9f98-22000b158848', addHandlers: true, errorHandler: function (err) {
+    var xl = new XL({projectId: '36842cbb-5587-11e6-9f98-22000b158848',  errorHandler: function (err) {
         console.error('Error: ', err);
     }});
 
@@ -69,16 +61,10 @@
             authType: 'login-pass',
             login: '',
             pass: ''
+        },  function (data) {
+            console.log(data);
         });
     }
-
-//    XL.init({});
-//
-//    // Add an event listener
-//    document.addEventListener("xl-event", function(e) {
-//        console.log(e.detail); // Prints "Example of an event"
-//    });
-
 </script>
 
 </body>

@@ -16,64 +16,72 @@ function XL (options) {
         return new XL(options);
     }
 
-    self._socialUrls = {};
-    self._errorHandler = options.errorHandler;
+    self._socialUrls = undefined;
+
+    self._options = {};
+    self._options.errorHandler = options.errorHandler;
+    self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
 
     self._api = new XLApi(options.projectId);
     self._api.getSocialsURLs(function (response) {
-        for (key in response) {
-            self._socialUrls['sn-' + key] = response[key];
+        self._socialUrls = {};
+        for (var key in response) {
+            if (response.hasOwnProperty(key)) {
+                self._socialUrls['sn-' + key] = response[key];
+            }
         }
-
-        console.log(self._socialUrls);
     }, function (e) {
         console.error(e);
     });
 
-    // self._socialUrls = {'sn-facebook': 'https://facebook.com', 'sn-vk': 'https://vk.com'};
+    var elements = self.getAllElementsWithAttribute('data-xl-auth');
+    var login = '';
+    var pass = '';
 
-    if (options.addHandlers == true) {
-        var elements = self.getAllElementsWithAttribute('data-xl-auth');
-        var login = '';
-        var pass = '';
-
-        for (var i = 0; i < elements.length; i++) {
-            var nodeValue = elements[i].attributes['data-xl-auth'].nodeValue;
-            if (nodeValue.startsWith('sn')) {
-                elements[i].onclick = function (nodeValue) {
-                    return function () {
-                        self.login({authType: nodeValue})
-                    };
-                }(nodeValue);
-            } else if (nodeValue == 'form-sms') {
-                // elements[i].onsubmit = config.eventHandlers.sms;
-            } else if (nodeValue == 'form-login_pass') {
-                // elements[i].onsubmit = config.eventHandlers.loginPass;
-                elements[i].onsubmit = function (login, pass) {
-                    return function (e) {
-                        e.preventDefault();
+    for (var i = 0; i < elements.length; i++) {
+        var nodeValue = elements[i].attributes['data-xl-auth'].nodeValue;
+        if (nodeValue.startsWith('sn')) {
+            elements[i].onclick = function (nodeValue) {
+                return function () {
+                    self.login({authType: nodeValue})
+                };
+            }(nodeValue);
+        } else if (nodeValue == 'form-sms') {
+            // elements[i].onsubmit = config.eventHandlers.sms;
+        } else if (nodeValue == 'form-login_pass') {
+            // elements[i].onsubmit = config.eventHandlers.loginPass;
+            elements[i].onsubmit = function (login, pass) {
+                return function (e) {
+                    e.preventDefault();
+                    if (self._options.loginPassValidator(login, pass)) {
                         self.login({
                             authType: 'login-pass',
                             login: login,
                             pass: pass
                         }, function (res) {
                             if (res.error) {
-                                if (self._errorHandler) {
-                                    self._errorHandler(res.error);
+                                if (self._options.errorHandler) {
+                                    self._options.errorHandler(res.error);
                                 }
                             } else {
                                 //TODO: сделать редирект
-                                window.location.href = '';
+                                if (res.login_url) {
+                                    window.location.href = res.login_url;
+                                } else {
+                                    console.error('Login/pass error');
+                                }
                             }
                         });
+                    } else {
+                        //TODO: error
                     }
-                }(login, pass);
-            } else if (nodeValue.startsWith('input-')) {
-                if (nodeValue == 'input-login') {
-                    login = '';
-                } else if (nodeValue == 'input-pass') {
-                    pass = '';
                 }
+            }(login, pass);
+        } else if (nodeValue.startsWith('input-')) {
+            if (nodeValue == 'input-login') {
+                login = '';
+            } else if (nodeValue == 'input-pass') {
+                pass = '';
             }
         }
     }
@@ -100,7 +108,15 @@ XL.prototype.login = function (prop, callback) {
             }
 
         } else if (prop.authType == 'login-pass') {
-            self._api.loginPassAuth(prop.login, prop.pass, callback, callback);
+            self._api.loginPassAuth(prop.login, prop.pass, function (a) {
+                if (res.login_url) {
+                    window.location.href = res.login_url;
+                } else {
+                    callback({error: 'Login/pass error'});
+                }
+            }, function (err) {
+                callback(err);
+            });
         } else if (prop.authType == 'sms') {
             if (smsAuthStep == 'phone') {
                 self._api.smsAuth(prop.phoneNumber, null, null);
