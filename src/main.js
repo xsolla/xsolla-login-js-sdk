@@ -11,15 +11,11 @@ var XLApi = require('./xlapi');
  */
 function XL (options) {
     var self = this;
-    // XXX Deprecated
-    if (!(this instanceof XL)) {
-        return new XL(options);
-    }
 
     self._socialUrls = undefined;
 
     self._options = {};
-    self._options.errorHandler = options.errorHandler;
+    self._options.errorHandler = options.errorHandler || function(a) {};
     self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
 
     self._api = new XLApi(options.projectId);
@@ -60,20 +56,11 @@ function XL (options) {
                             pass: pass
                         }, function (res) {
                             if (res.error) {
-                                if (self._options.errorHandler) {
-                                    self._options.errorHandler(res.error);
-                                }
-                            } else {
-                                //TODO: сделать редирект
-                                if (res.login_url) {
-                                    window.location.href = res.login_url;
-                                } else {
-                                    console.error('Login/pass error');
-                                }
+                                self._options.errorHandler(res);
                             }
                         });
                     } else {
-                        //TODO: error
+                        self._options.errorHandler(self.createErrorObject('Login or pass not valid', XL.INVALID_LOGIN_ERROR_CODE));
                     }
                 }
             }(login, pass);
@@ -112,7 +99,7 @@ XL.prototype.login = function (prop, callback) {
                 if (res.login_url) {
                     window.location.href = res.login_url;
                 } else {
-                    callback({error: 'Login/pass error'});
+                    callback(self.createErrorObject('Login or pass not valid', XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE));
                 }
             }, function (err) {
                 callback(err);
@@ -143,5 +130,17 @@ XL.prototype.getAllElementsWithAttribute = function (attribute) {
     }
     return matchingElements;
 };
+
+XL.prototype.createErrorObject = function(message, code) {
+    return {
+        error: {
+            message: message,
+            code: code || -1
+        }
+    };
+};
+
+XL.INVALID_LOGIN_ERROR_CODE = 1;
+XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
 
 module.exports = XL;

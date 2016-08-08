@@ -63,7 +63,9 @@ form-login_pass | Marks form as submit form with user login and password
 input-login     | Marks input of login/pass form as containing login
 input-pass      | Marks input of login/pass form as containing password
 
+
 ###API call integration
+
 API call intagration provide you with full controll of Xsolla Login authorization.
 
 To perform social network auth call 
