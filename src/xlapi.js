@@ -8,14 +8,12 @@
  */
 var XLApi = function (projectId) {
     var self = this;
-    // this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/'; //http://test-login.xsolla.com/api/
-    this.baseUrl = 'http://test-login.xsolla.com/api/';
+    this.baseUrl = 'http://login.xsolla.com/api/';
+    // this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/';
+    // this.baseUrl = 'http://test-login.xsolla.com/api/';
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {
-
-        console.log('asdasd');
-
         var r = new XMLHttpRequest();
         r.open(params.method, self.baseUrl + params.endpoint, true);
         r.onreadystatechange = function () {
@@ -26,7 +24,7 @@ var XLApi = function (projectId) {
                     if (r.responseText) {
                         error(JSON.parse(r.responseText));
                     } else {
-                        error({error: {message: 'Networking error'}});
+                        error({error: {message: 'Networking error', code: r.status}});
                     }
                 }
             }
