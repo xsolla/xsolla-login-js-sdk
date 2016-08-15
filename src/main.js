@@ -95,7 +95,7 @@ XL.prototype.login = function (prop, callback) {
             }
 
         } else if (prop.authType == 'login-pass') {
-            self._api.loginPassAuth(prop.login, prop.pass, function (a) {
+            self._api.loginPassAuth(prop.login, prop.pass, prop.rememberMe, function (a) {
                 if (res.login_url) {
                     window.location.href = res.login_url;
                 } else {

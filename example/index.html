@@ -47,9 +47,12 @@
 
 
 <script type="application/javascript" >
-    var xl = new XL({projectId: '36842cbb-5587-11e6-9f98-22000b158848',  errorHandler: function (err) {
-        console.error('Error: ', err);
-    }});
+    var xl = new XL({
+        projectId: '36842cbb-5587-11e6-9f98-22000b158848',
+        errorHandler: function (err) {
+            console.error('Error: ', err);
+        }
+    });
 
     function facebookAuth() {
         xl.login({
@@ -62,7 +65,8 @@
         xl.login({
             authType: 'login-pass',
             login: '',
-            pass: ''
+            pass: '',
+            rememberMe: true
         },  function (data) {
             console.log(data);
         });
