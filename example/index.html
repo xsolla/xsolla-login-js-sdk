@@ -47,22 +47,21 @@
 
 
 <script type="application/javascript" >
-    var xl = new XL({
+    XL.init({
         projectId: '36842cbb-5587-11e6-9f98-22000b158848',
-        errorHandler: function (err) {
-            console.error('Error: ', err);
-        }
+            errorHandler: function (err) {
+                console.error('Error: ', err);
+            }
     });
-
     function facebookAuth() {
-        xl.login({
+        XL.login({
             authType: 'sn-facebook'
         });
     }
 
     function loginPass(e) {
         e.preventDefault();
-        xl.login({
+        XL.login({
             authType: 'login-pass',
             login: '',
             pass: '',
@@ -72,9 +71,35 @@
         });
     }
 
-    function testLink() {
-        window.location.href = 'https://google.com'
-    }
+
+//    var xl = new XL({
+//        projectId: '36842cbb-5587-11e6-9f98-22000b158848',
+//        errorHandler: function (err) {
+//            console.error('Error: ', err);
+//        }
+//    });
+//
+//    function facebookAuth() {
+//        xl.login({
+//            authType: 'sn-facebook'
+//        });
+//    }
+//
+//    function loginPass(e) {
+//        e.preventDefault();
+//        xl.login({
+//            authType: 'login-pass',
+//            login: '',
+//            pass: '',
+//            rememberMe: true
+//        },  function (data) {
+//            console.log(data);
+//        });
+//    }
+//
+//    function testLink() {
+//        window.location.href = 'https://google.com'
+//    }
 </script>
 
 </body>

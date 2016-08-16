@@ -140,6 +140,23 @@ XL.prototype.createErrorObject = function(message, code) {
     };
 };
 
+XL.init = function (params) {
+    if (!window.__xl) {
+        var xl = new XL(params);
+        window.__xl = xl;
+    } else {
+        console.error('XL already init!');
+    }
+};
+
+XL.login = function (prop, callback) {
+    if (window.__xl) {
+        window.__xl.login(prop, callback);
+    } else {
+        console.error('Please run XL.init() first');
+    }
+};
+
 XL.INVALID_LOGIN_ERROR_CODE = 1;
 XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
 
