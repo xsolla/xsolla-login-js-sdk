@@ -73,17 +73,18 @@ function XL (options) {
     //     }
     // }
 
-    document.addEventListener('click', function (e) {
-        var element = e.srcElement;
-        var xlData = element.attributes['data-xl-auth'];
-        if (xlData) {
-            var nodeValue = xlData.nodeValue;
-            if (nodeValue) {
-                self.login({authType: nodeValue});
+    if (elements.length > 0) {
+        document.addEventListener('click', function (e) {
+            var element = e.target;
+            var xlData = element.attributes['data-xl-auth'];
+            if (xlData) {
+                var nodeValue = xlData.nodeValue;
+                if (nodeValue) {
+                    self.login({authType: nodeValue});
+                }
             }
-        }
-    });
-
+        });
+    }
 }
 
 XL.prototype.login = function (prop, callback) {
