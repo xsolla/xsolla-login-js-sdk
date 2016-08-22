@@ -17,6 +17,7 @@ function XL (options) {
     self._options = {};
     self._options.errorHandler = options.errorHandler || function(a) {};
     self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
+    self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
 
     self._api = new XLApi(options.projectId);
     self._api.getSocialsURLs(function (response) {
@@ -73,16 +74,18 @@ function XL (options) {
     //     }
     // }
 
-    document.addEventListener('click', function (e) {
-        var element = e.target;
-        var xlData = element.attributes['data-xl-auth'];
-        if (xlData) {
-            var nodeValue = xlData.nodeValue;
-            if (nodeValue) {
-                self.login({authType: nodeValue});
+    if (self._options.isMarkupSocialsHandlersEnabled) {
+        document.addEventListener('click', function (e) {
+            var element = e.target;
+            var xlData = element.attributes['data-xl-auth'];
+            if (xlData) {
+                var nodeValue = xlData.nodeValue;
+                if (nodeValue) {
+                    self.login({authType: nodeValue});
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 XL.prototype.login = function (prop, callback) {

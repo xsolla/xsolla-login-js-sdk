@@ -49,9 +49,11 @@
 <script type="application/javascript" >
     XL.init({
         projectId: '36842cbb-5587-11e6-9f98-22000b158848',
-            errorHandler: function (err) {
-                console.error('Error: ', err);
-            }
+        errorHandler: function (err) {
+            console.error('Error: ', err);
+        },
+        isMarkupSocialsHandlersEnabled: true
+
     });
     function facebookAuth() {
         XL.login({
