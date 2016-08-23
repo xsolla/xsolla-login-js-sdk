@@ -10,9 +10,9 @@ var request = require('superagent');
 
 var XLApi = function (projectId) {
     var self = this;
-    // this.baseUrl = 'http://login.xsolla.com/api/';
+    this.baseUrl = 'http://login.xsolla.com/api/';
     // this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/';
-    this.baseUrl = 'http://test-login.xsolla.com/api/';
+    // this.baseUrl = 'http://test-login.xsolla.com/api/';
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {
@@ -43,8 +43,8 @@ var XLApi = function (projectId) {
             if (!err) {
                 success(JSON.parse(res.text));
             } else {
-                debugger;
-                error({error: {message: err.message, code: 10}});
+                var body = res.body || {message: err.message, code: 10};
+                error({error: body});
             }
         };
 
@@ -53,9 +53,9 @@ var XLApi = function (projectId) {
         if (method == 'GET') {
             request.get(requestUrl, responseHandler);
         } else if (method == 'POST') {
-            debugger;
             request
                 .post(requestUrl)
+                .set('Content-Type', 'application/json; charset=UTF-8')
                 .send(params.postBody)
                 .end(responseHandler);
         }
