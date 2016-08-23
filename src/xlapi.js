@@ -6,7 +6,6 @@
  * @param projectId - project's unique identifier
  * @constructor
  */
-var request = require('superagent');
 
 var XLApi = function (projectId) {
     var self = this;
@@ -16,49 +15,49 @@ var XLApi = function (projectId) {
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {
-        // var r = new XMLHttpRequest();
-        // r.open(params.method, self.baseUrl + params.endpoint, true);
-        // // r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        // r.onreadystatechange = function () {
-        //     if (r.readyState == 4) {
-        //         if (r.status == 200) {
-        //             success(JSON.parse(r.responseText));
-        //         } else {
-        //             if (r.responseText) {
-        //                 error(JSON.parse(r.responseText));
-        //             } else {
-        //                 error({error: {message: 'Networking error', code: r.status}});
-        //             }
-        //         }
-        //     }
-        // };
-        // if (params.method == 'POST') {
-        //     r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        //     r.send(params.postBody);
-        // } else if (params.method == 'GET') {
-        //     r.send(params.getArguments);
-        // }
-
-        var responseHandler = function (err, res) {
-            if (!err) {
-                success(JSON.parse(res.text));
-            } else {
-                var body = res.body || {message: err.message, code: 10};
-                error({error: body});
+        var r = new XMLHttpRequest();
+        r.open(params.method, self.baseUrl + params.endpoint, true);
+        // r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        r.onreadystatechange = function () {
+            if (r.readyState == 4) {
+                if (r.status == 200) {
+                    success(JSON.parse(r.responseText));
+                } else {
+                    if (r.responseText) {
+                        error(JSON.parse(r.responseText));
+                    } else {
+                        error({error: {message: 'Networking error', code: r.status}});
+                    }
+                }
             }
         };
-
-        var method = params.method || 'GET';
-        var requestUrl = self.baseUrl + params.endpoint;
-        if (method == 'GET') {
-            request.get(requestUrl, responseHandler);
-        } else if (method == 'POST') {
-            request
-                .post(requestUrl)
-                .set('Content-Type', 'application/json; charset=UTF-8')
-                .send(params.postBody)
-                .end(responseHandler);
+        if (params.method == 'POST') {
+            r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            r.send(params.postBody);
+        } else if (params.method == 'GET') {
+            r.send(params.getArguments);
         }
+
+        // var responseHandler = function (err, res) {
+        //     if (!err) {
+        //         success(JSON.parse(res.text));
+        //     } else {
+        //         var body = res.body || {message: err.message, code: 10};
+        //         error({error: body});
+        //     }
+        // };
+        //
+        // var method = params.method || 'GET';
+        // var requestUrl = self.baseUrl + params.endpoint;
+        // if (method == 'GET') {
+        //     request.get(requestUrl, responseHandler);
+        // } else if (method == 'POST') {
+        //     request
+        //         .post(requestUrl)
+        //         .set('Content-Type', 'application/json; charset=UTF-8')
+        //         .send(params.postBody)
+        //         .end(responseHandler);
+        // }
 
     };
 };
