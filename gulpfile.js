@@ -85,7 +85,7 @@ gulp.task('browser-sync', function () {
         server: {
             baseDir: ['example', 'dist']
         },
-        port: 3100,
+        port: 9000,
         ghostMode: false
     });
 });

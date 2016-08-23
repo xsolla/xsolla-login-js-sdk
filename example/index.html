@@ -24,15 +24,15 @@
 
 <div>
     <div>Login (on submit): </div>
-    <form data-xl-auth="form-login_pass" onsubmit="loginPass()">
-        <input type="text" data-xl-auth="input-login">
-        <input type="password" data-xl-auth="input-pass">
+    <form id="my-form">
+        <input type="text" >
+        <input type="password" >
         <input type="submit">
     </form>
     <div>Login (market): </div>
     <form data-xl-auth="form-login_pass">
-        <input type="text" data-xl-auth="input-login">
-        <input type="password" data-xl-auth="input-pass">
+        <input type="text" >
+        <input type="password" >
         <input type="submit">
     </form>
 </div>
@@ -48,7 +48,7 @@
 
 <script type="application/javascript" >
     XL.init({
-        projectId: '36842cbb-5587-11e6-9f98-22000b158848',
+        projectId: '40db2ea4-5d42-11e6-a3ff-005056a0e04a',
         errorHandler: function (err) {
             console.error('Error: ', err);
         },
@@ -61,17 +61,32 @@
         });
     }
 
-    function loginPass(e) {
-        e.preventDefault();
+
+    document.querySelector("#my-form").addEventListener("submit", function(e){
+        e.preventDefault();    //stop form from submitting
         XL.login({
             authType: 'login-pass',
-            login: '',
-            pass: '',
+            login: 'qwe',
+            pass: 'qwe',
             rememberMe: true
         },  function (data) {
             console.log(data);
         });
-    }
+    });
+
+//    function loginPass(e) {
+//        e.preventDefault();
+//        XL.login({
+//            authType: 'login-pass',
+//            login: 'qwe',
+//            pass: 'qwe',
+//            rememberMe: true
+//        },  function (data) {
+//            console.log(data);
+//        });
+//
+//        return false;
+//    }
 
 
 //    var xl = new XL({
