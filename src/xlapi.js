@@ -66,8 +66,16 @@ var XLApi = function (projectId) {
  * @param success - success callback
  * @param error - error callback
  */
-XLApi.prototype.getSocialsURLs = function (success, error) {
-    return this.makeApiCall({method: 'GET', endpoint: 'social/login_urls?projectId='+this.projectId, getArguments: null}, success, error);
+XLApi.prototype.getSocialsURLs = function (success, error, getArguments) {
+    var str = "";
+    for (var key in getArguments) {
+        if (str != "") {
+            str += "&";
+        }
+        str += key + "=" + encodeURIComponent(getArguments[key]);
+    }
+
+    return this.makeApiCall({method: 'GET', endpoint: 'social/login_urls?' + str, getArguments: null}, success, error);
 };
 
 XLApi.prototype.loginPassAuth = function (login, pass, rememberMe, success, error) {

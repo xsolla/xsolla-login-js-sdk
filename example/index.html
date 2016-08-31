@@ -53,8 +53,8 @@
         errorHandler: function (err) {
             console.error('Error: ', err);
         },
-        isMarkupSocialsHandlersEnabled: true
-
+        isMarkupSocialsHandlersEnabled: true,
+        callbackUrl:  window.location.host
     });
     function facebookAuth() {
         XL.login({

@@ -18,6 +18,14 @@ function XL (options) {
     self._options.errorHandler = options.errorHandler || function(a) {};
     self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
     self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
+    self._options.callbackUrl = options.callbackUrl || undefined;
+
+    var params = {};
+    params.projectId = options.projectId;
+
+    if (self._options.callbackUrl) {
+        params.callback_url = self._options.callbackUrl;
+    }
 
     self._api = new XLApi(options.projectId);
     self._api.getSocialsURLs(function (response) {
@@ -29,7 +37,7 @@ function XL (options) {
         }
     }, function (e) {
         console.error(e);
-    });
+    }, params);
 
     var elements = self.getAllElementsWithAttribute('data-xl-auth');
     var login = '';
