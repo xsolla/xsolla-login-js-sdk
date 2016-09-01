@@ -4,14 +4,14 @@
 /**
  * Impelements Xsolla Login Api
  * @param projectId - project's unique identifier
+ * @param baseUrl - api endpoint
  * @constructor
  */
 
-var XLApi = function (projectId) {
+var XLApi = function (projectId, baseUrl) {
     var self = this;
-    this.baseUrl = 'http://login.xsolla.com/api/';
-    // this.baseUrl = 'http://xsolla-login-api.herokuapp.com/api/';
-    // this.baseUrl = 'http://test-login.xsolla.com/api/';
+    this.baseUrl = baseUrl || 'http://login.xsolla.com/api/';
+
     this.projectId = projectId;
 
     this.makeApiCall = function (params, success, error) {

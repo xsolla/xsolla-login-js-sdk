@@ -54,7 +54,8 @@
             console.error('Error: ', err);
         },
         isMarkupSocialsHandlersEnabled: true,
-        callbackUrl:  window.location.host
+        callbackUrl:  window.location.host,
+        apiUrl: 'http://test-login.xsolla.com/api/'
     });
     function facebookAuth() {
         XL.login({

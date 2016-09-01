@@ -19,6 +19,7 @@ function XL (options) {
     self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
     self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
     self._options.callbackUrl = options.callbackUrl || undefined;
+    self._options.apiUrl = options.apiUrl || 'http://login.xsolla.com/api/';
 
     var params = {};
     params.projectId = options.projectId;
@@ -27,7 +28,8 @@ function XL (options) {
         params.callback_url = self._options.callbackUrl;
     }
 
-    self._api = new XLApi(options.projectId);
+    self._api = new XLApi(options.projectId, self._options.apiUrl);
+
     self._api.getSocialsURLs(function (response) {
         self._socialUrls = {};
         for (var key in response) {
