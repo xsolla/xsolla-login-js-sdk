@@ -16,6 +16,7 @@ var XLApi = function (projectId, baseUrl) {
 
     this.makeApiCall = function (params, success, error) {
         var r = new XMLHttpRequest();
+        r.withCredentials = true;
         r.open(params.method, self.baseUrl + params.endpoint, true);
         // r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         r.onreadystatechange = function () {
