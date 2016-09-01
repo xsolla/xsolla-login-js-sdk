@@ -54,45 +54,6 @@ function XL (options) {
     var login = '';
     var pass = '';
 
-    // for (var i = 0; i < elements.length; i++) {
-    //     var nodeValue = elements[i].attributes['data-xl-auth'].nodeValue;
-    //     if (nodeValue.startsWith('sn')) {
-    //         elements[i].onclick = function (nodeValue) {
-    //             return function () {
-    //                 self.login({authType: nodeValue})
-    //             };
-    //         }(nodeValue);
-    //     } else if (nodeValue == 'form-sms') {
-    //         // elements[i].onsubmit = config.eventHandlers.sms;
-    //     } else if (nodeValue == 'form-login_pass') {
-    //         // elements[i].onsubmit = config.eventHandlers.loginPass;
-    //         elements[i].onsubmit = function (login, pass) {
-    //             return function (e) {
-    //                 e.preventDefault();
-    //                 if (self._options.loginPassValidator(login, pass)) {
-    //                     self.login({
-    //                         authType: 'login-pass',
-    //                         login: login,
-    //                         pass: pass
-    //                     }, function (res) {
-    //                         if (res.error) {
-    //                             self._options.errorHandler(res);
-    //                         }
-    //                     });
-    //                 } else {
-    //                     self._options.errorHandler(self.createErrorObject('Login or pass not valid', XL.INVALID_LOGIN_ERROR_CODE));
-    //                 }
-    //             }
-    //         }(login, pass);
-    //     } else if (nodeValue.startsWith('input-')) {
-    //         if (nodeValue == 'input-login') {
-    //             login = '';
-    //         } else if (nodeValue == 'input-pass') {
-    //             pass = '';
-    //         }
-    //     }
-    // }
-
     // Find closest ancestor with data-xl-auth attribute
     function findAncestor(el) {
         if (el.attributes['data-xl-auth']) {
