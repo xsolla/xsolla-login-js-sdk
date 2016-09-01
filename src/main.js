@@ -31,16 +31,24 @@ function XL (options) {
 
     self._api = new XLApi(options.projectId, self._options.apiUrl);
 
-    self._api.getSocialsURLs(function (response) {
-        self._socialUrls = {};
-        for (var key in response) {
-            if (response.hasOwnProperty(key)) {
-                self._socialUrls['sn-' + key] = response[key];
+
+   var updateSocialLinks = function () {
+        self._api.getSocialsURLs(function (response) {
+            self._socialUrls = {};
+            for (var key in response) {
+                if (response.hasOwnProperty(key)) {
+                    self._socialUrls['sn-' + key] = response[key];
+                }
             }
-        }
-    }, function (e) {
-        console.error(e);
-    }, params);
+        }, function (e) {
+            console.error(e);
+        }, params);
+    };
+
+
+    //Update auth links every hour
+    updateSocialLinks();
+    setInterval(updateSocialLinks, 1000*60*59);
 
     var elements = self.getAllElementsWithAttribute('data-xl-auth');
     var login = '';
