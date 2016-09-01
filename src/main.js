@@ -20,6 +20,7 @@ function XL (options) {
     self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
     self._options.callbackUrl = options.callbackUrl || undefined;
     self._options.apiUrl = options.apiUrl || 'http://login.xsolla.com/api/';
+    self._options.maxXLClickDepth = options.maxXLClickDepth || 20;
 
     var params = {};
     params.projectId = options.projectId;
@@ -84,10 +85,24 @@ function XL (options) {
     //     }
     // }
 
+    // Find closest ancestor with data-xl-auth attribute
+    function findAncestor(el) {
+        if (el.attributes['data-xl-auth']) {
+            return el;
+        }
+        var i = 0;
+        while ((el = el.parentElement) && !el.attributes['data-xl-auth'] && ++i < self._options.maxXLClickDepth);
+        return el;
+    }
+
     if (self._options.isMarkupSocialsHandlersEnabled) {
         document.addEventListener('click', function (e) {
-            var element = e.target;
-            var xlData = element.attributes['data-xl-auth'];
+            var target = findAncestor(e.target);
+            // Do nothing if click was outside of elements with data-xl-auth
+            if (!target) {
+                return;
+            }
+            var xlData = target.attributes['data-xl-auth'];
             if (xlData) {
                 var nodeValue = xlData.nodeValue;
                 if (nodeValue) {
