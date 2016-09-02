@@ -114,7 +114,7 @@ XL.prototype.login = function (prop, error, success) {
                         window.location.href = res.login_url;
                     };
                     if (success) {
-                        success({status: 'success', finish: finishAuth});
+                        success({status: 'success', finish: finishAuth, redirectUrl: res.login_url});
                     } else {
                         finishAuth();
                     }
