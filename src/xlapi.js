@@ -18,7 +18,6 @@ var XLApi = function (projectId, baseUrl) {
         var r = new XMLHttpRequest();
         r.withCredentials = true;
         r.open(params.method, self.baseUrl + params.endpoint, true);
-        // r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         r.onreadystatechange = function () {
             if (r.readyState == 4) {
                 if (r.status == 200) {
@@ -38,28 +37,6 @@ var XLApi = function (projectId, baseUrl) {
         } else if (params.method == 'GET') {
             r.send(params.getArguments);
         }
-
-        // var responseHandler = function (err, res) {
-        //     if (!err) {
-        //         success(JSON.parse(res.text));
-        //     } else {
-        //         var body = res.body || {message: err.message, code: 10};
-        //         error({error: body});
-        //     }
-        // };
-        //
-        // var method = params.method || 'GET';
-        // var requestUrl = self.baseUrl + params.endpoint;
-        // if (method == 'GET') {
-        //     request.get(requestUrl, responseHandler);
-        // } else if (method == 'POST') {
-        //     request
-        //         .post(requestUrl)
-        //         .set('Content-Type', 'application/json; charset=UTF-8')
-        //         .send(params.postBody)
-        //         .end(responseHandler);
-        // }
-
     };
 };
 /**

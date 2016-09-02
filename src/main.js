@@ -12,7 +12,7 @@ var XLApi = require('./xlapi');
 function XL (options) {
     var self = this;
 
-    self._socialUrls = undefined;
+    self._socialUrls = {};
 
     self._options = {};
     self._options.errorHandler = options.errorHandler || function(a) {};
@@ -81,8 +81,13 @@ function XL (options) {
         });
     }
 }
-
-XL.prototype.login = function (prop, callback) {
+/**
+ * Performs login
+ * @param prop
+ * @param error - call in case error
+ * @param success
+ */
+XL.prototype.login = function (prop, error, success) {
     var self = this;
 
     if (!prop || !self._socialUrls) {
@@ -105,13 +110,19 @@ XL.prototype.login = function (prop, callback) {
         } else if (prop.authType == 'login-pass') {
             self._api.loginPassAuth(prop.login, prop.pass, prop.rememberMe, function (res) {
                 if (res.login_url) {
-                    callback({status: 'success'});
-                    window.location.href = res.login_url;
+                    var finishAuth = function () {
+                        window.location.href = res.login_url;
+                    };
+                    if (success) {
+                        success({status: 'success', finish: finishAuth});
+                    } else {
+                        finishAuth();
+                    }
                 } else {
-                    callback(self.createErrorObject('Login or pass not valid', XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE));
+                    error(self.createErrorObject('Login or pass not valid', XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE));
                 }
             }, function (err) {
-                callback(err);
+                error(err);
             });
         } else if (prop.authType == 'sms') {
             if (smsAuthStep == 'phone') {
@@ -175,7 +186,7 @@ XL.AuthWidget = function (divName, options) {
         if (element) {
             document.getElementById(divName).innerHTML = html;
         } else {
-            console.error('Element ' + divName +' not found!');
+            console.error('Element \"' + divName +'\" not found!');
         }
     }
 };
