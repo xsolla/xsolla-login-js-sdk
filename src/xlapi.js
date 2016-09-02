@@ -66,6 +66,7 @@ var XLApi = function (projectId, baseUrl) {
  * Get all avialable social methods auth url
  * @param success - success callback
  * @param error - error callback
+ * @param getArguments - additional params to send with request
  */
 XLApi.prototype.getSocialsURLs = function (success, error, getArguments) {
     var str = "";

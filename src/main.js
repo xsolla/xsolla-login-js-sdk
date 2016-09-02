@@ -103,8 +103,9 @@ XL.prototype.login = function (prop, callback) {
             }
 
         } else if (prop.authType == 'login-pass') {
-            self._api.loginPassAuth(prop.login, prop.pass, prop.rememberMe, function (a) {
+            self._api.loginPassAuth(prop.login, prop.pass, prop.rememberMe, function (res) {
                 if (res.login_url) {
+                    callback({status: 'success'});
                     window.location.href = res.login_url;
                 } else {
                     callback(self.createErrorObject('Login or pass not valid', XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE));
