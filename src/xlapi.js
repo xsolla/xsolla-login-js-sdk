@@ -10,7 +10,7 @@
 
 var XLApi = function (projectId, baseUrl) {
     var self = this;
-    this.baseUrl = baseUrl || 'http://login.xsolla.com/api/';
+    this.baseUrl = baseUrl || '//login.xsolla.com/api/';
 
     this.projectId = projectId;
 

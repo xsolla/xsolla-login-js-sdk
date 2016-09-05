@@ -19,7 +19,7 @@ function XL (options) {
     self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
     self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
     self._options.callbackUrl = options.callbackUrl || undefined;
-    self._options.apiUrl = options.apiUrl || 'http://login.xsolla.com/api/';
+    self._options.apiUrl = options.apiUrl || '//login.xsolla.com/api/';
     self._options.maxXLClickDepth = options.maxXLClickDepth || 20;
 
     var params = {};
@@ -135,6 +135,10 @@ XL.prototype.login = function (prop, error, success) {
             console.error('Unknown auth type');
         }
     }
+};
+
+XL.prototype.sendSms = function (number, error, success) {
+
 };
 
 
