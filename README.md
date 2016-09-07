@@ -1,5 +1,5 @@
 # Xsolla Login Javascript SDK
-A library allows you to quickly integrate Xsolla Login into your project. In order to user library please contact [bizdev@xsolla.com](mailto:bizdev@xsolla.com) 
+The library allows you to quickly integrate Xsolla Login into your project. In order to user library please contact [bizdev@xsolla.com](mailto:bizdev@xsolla.com) 
 ## Installing
 
 ### In the Browser
@@ -20,15 +20,11 @@ bower install xsolla-login-js-sdk
 ```
 
 ## Usage and Getting Started
-SDK supports following types of authorization:
-* Login/Password
-* Social networks:
-  * Facebook
-  * Google+
-  * LinkedIn
-  * Twitter
-  * VK
+Currently SDK supports following types of authorization:
+* via login/password
+* via social networks
 
+More methods on its way.
 ### Initializing
 
 Add the following script at the bottom of your login page.
@@ -37,10 +33,16 @@ Add the following script at the bottom of your login page.
     var options = { 
         projectId: '<project_id>'
     };
-    var xl = new XL(options);
+    XL.init(options);
 </script>
 ```
 The `options` object can has the following properties:
+
+Option name | Decsription
+------------|----
+`projectId` _(required)_| Unique identifer of your project
+`callbackUrl` | URL where user will be redirected at the end of authoreization cycle. URL can be `localhost` or one of the specified in app settings.
+`isMarkupSocialsHandlersEnabled` | Enables markup integration for social networks.
 
 
 SDK supports two types of integration:
@@ -50,36 +52,50 @@ SDK supports two types of integration:
 You can mix intefration types within project.
 ### Markup Integration
 You can integrate Xsolla Login simply mark your code html controls with `data-xl-auth=""` attribute so SDK automatically applies appropriate `onclick` handler.
-The `data-xl-auth` attribute has the following values:
 
-Attribute Value | Decsription
-----------------|---
-sn-facebook     | Marks element as [Facebook](https://facebook.com) login button 
-sn-google       | Marks element as [Google+](https://plus.google.com) login button 
-sn-linkedin     | Marks element as [LinkedIn](https://linkedin.com) login button
-sn-twitter      | Marks element as [Twitter](https://twitter.com) login button
-sn-vk           | Marks element as [VK](https://vk.com) login button
-form-login_pass | Marks form as submit form with user login and password
-input-login     | Marks input of login/pass form as containing login
-input-pass      | Marks input of login/pass form as containing password
+Markup integration is currently supported by social networks.
 
-### API call integration
+
+### API Call Integration
 
 API call intagration provide you with full controll of Xsolla Login authorization.
 
+#### Social Networks
 To perform social network auth call 
 ```javascript
-xl.login({
+XL.login({
     authType: 'sn-*'
 });
 ```
-on your allready initialized `XL` object, where * is social network name.
+on `XL` object, where * is social network name. For example: `sn-facebook`.
 
-Supported names:
-* `facebook`
-* `google`
-* `linkedin`
-* `twitter`
-* `vk`
 
-This method redirects user to appropriate social network and ended up on you `callback_url`.
+This method redirects user to appropriate social network and ended up on your `callback_url`.
+
+#### Login and Password
+To perform login/pass auth call:
+```javascript
+XL.login({
+    authType: 'login-pass',
+    login: '<login>',
+    pass: '<pass>',
+    rememberMe: true
+},  function (error) {
+    
+},  function (success) {
+     
+});
+```
+This method method checks user's credentials and redirects to destination page. If success callback is passed you should mannualy finish auth process by calling `success.finish()`. 
+
+You should pass an object with following keys:
+
+Field name | Value
+-----------|------
+authType   | login-pass
+login      | user's login
+pass       | user's password
+rememberMe | Whether browser should remember this user's auth
+
+
+
