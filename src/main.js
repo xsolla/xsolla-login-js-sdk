@@ -18,15 +18,15 @@ function XL (options) {
     self._options.errorHandler = options.errorHandler || function(a) {};
     self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
     self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
-    self._options.callbackUrl = options.callbackUrl || undefined;
+    self._options.redirectUrl = options.redirectUrl || undefined;
     self._options.apiUrl = options.apiUrl || '//login.xsolla.com/api/';
     self._options.maxXLClickDepth = options.maxXLClickDepth || 20;
 
     var params = {};
     params.projectId = options.projectId;
 
-    if (self._options.callbackUrl) {
-        params.callback_url = self._options.callbackUrl;
+    if (self._options.redirectUrl) {
+        params.redirect_url = self._options.redirectUrl;
     }
 
     self._api = new XLApi(options.projectId, self._options.apiUrl);
