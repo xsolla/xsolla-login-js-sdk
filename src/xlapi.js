@@ -57,11 +57,12 @@ XLApi.prototype.getSocialsURLs = function (success, error, getArguments) {
     return this.makeApiCall({method: 'GET', endpoint: 'social/login_urls?' + str, getArguments: null}, success, error);
 };
 
-XLApi.prototype.loginPassAuth = function (login, pass, rememberMe, success, error) {
+XLApi.prototype.loginPassAuth = function (login, pass, rememberMe, redirectUrl, success, error) {
     var body = {
         username: login,
         password: pass,
-        remember_me: rememberMe
+        remember_me: rememberMe,
+        redirectUrl: redirectUrl
     };
     return this.makeApiCall({method: 'POST', endpoint: 'proxy/login?projectId='+this.projectId, postBody: JSON.stringify(body)}, success, error);
 };
