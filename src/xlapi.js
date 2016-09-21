@@ -62,7 +62,7 @@ XLApi.prototype.loginPassAuth = function (login, pass, rememberMe, redirectUrl, 
         username: login,
         password: pass,
         remember_me: rememberMe,
-        redirectUrl: redirectUrl
+        redirect_url: redirectUrl
     };
     return this.makeApiCall({method: 'POST', endpoint: 'proxy/login?projectId='+this.projectId, postBody: JSON.stringify(body)}, success, error);
 };
