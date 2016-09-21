@@ -61,10 +61,9 @@ XLApi.prototype.loginPassAuth = function (login, pass, rememberMe, redirectUrl, 
     var body = {
         username: login,
         password: pass,
-        remember_me: rememberMe,
-        redirect_url: redirectUrl
+        remember_me: rememberMe
     };
-    return this.makeApiCall({method: 'POST', endpoint: 'proxy/login?projectId='+this.projectId, postBody: JSON.stringify(body)}, success, error);
+    return this.makeApiCall({method: 'POST', endpoint: 'proxy/login?projectId='+this.projectId + '&redirect_url=' + redirectUrl, postBody: JSON.stringify(body)}, success, error);
 };
 
 XLApi.prototype.smsAuth = function (phoneNumber, success, error) {
