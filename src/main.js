@@ -15,12 +15,17 @@ function XL (options) {
     self._socialUrls = {};
 
     self._options = {};
-    self._options.errorHandler = options.errorHandler || function(a) {};
-    self._options.loginPassValidator = options.loginPassValidator || function (a,b) { return true; };
+    self._options.errorHandler = options.errorHandler || function (a) {
+        };
+    self._options.loginPassValidator = options.loginPassValidator || function (a, b) {
+            return true;
+        };
     self._options.isMarkupSocialsHandlersEnabled = options.isMarkupSocialsHandlersEnabled || false;
     self._options.redirectUrl = options.redirectUrl || undefined;
     self._options.apiUrl = options.apiUrl || '//login.xsolla.com/api/';
     self._options.maxXLClickDepth = options.maxXLClickDepth || 20;
+    self._options.onlyWidgets = options.onlyWidgets || false;
+    self._options.projectId = options.projectId;
 
     var params = {};
     params.projectId = options.projectId;
@@ -31,54 +36,55 @@ function XL (options) {
 
     self._api = new XLApi(options.projectId, self._options.apiUrl);
 
+    if (!self._options.onlyWidgets) {
 
-   var updateSocialLinks = function () {
-        self._api.getSocialsURLs(function (response) {
-            self._socialUrls = {};
-            for (var key in response) {
-                if (response.hasOwnProperty(key)) {
-                    self._socialUrls['sn-' + key] = response[key];
+        var updateSocialLinks = function () {
+            self._api.getSocialsURLs(function (response) {
+                self._socialUrls = {};
+                for (var key in response) {
+                    if (response.hasOwnProperty(key)) {
+                        self._socialUrls['sn-' + key] = response[key];
+                    }
                 }
+            }, function (e) {
+                console.error(e);
+            }, params);
+        };
+
+        //Update auth links every hour
+        updateSocialLinks();
+        setInterval(updateSocialLinks, 1000 * 60 * 59);
+
+        var elements = self.getAllElementsWithAttribute('data-xl-auth');
+        var login = '';
+        var pass = '';
+
+        // Find closest ancestor with data-xl-auth attribute
+        function findAncestor(el) {
+            if (el.attributes['data-xl-auth']) {
+                return el;
             }
-        }, function (e) {
-            console.error(e);
-        }, params);
-    };
-
-
-    //Update auth links every hour
-    updateSocialLinks();
-    setInterval(updateSocialLinks, 1000*60*59);
-
-    var elements = self.getAllElementsWithAttribute('data-xl-auth');
-    var login = '';
-    var pass = '';
-
-    // Find closest ancestor with data-xl-auth attribute
-    function findAncestor(el) {
-        if (el.attributes['data-xl-auth']) {
+            var i = 0;
+            while ((el = el.parentElement) && !el.attributes['data-xl-auth'] && ++i < self._options.maxXLClickDepth);
             return el;
         }
-        var i = 0;
-        while ((el = el.parentElement) && !el.attributes['data-xl-auth'] && ++i < self._options.maxXLClickDepth);
-        return el;
-    }
 
-    if (self._options.isMarkupSocialsHandlersEnabled) {
-        document.addEventListener('click', function (e) {
-            var target = findAncestor(e.target);
-            // Do nothing if click was outside of elements with data-xl-auth
-            if (!target) {
-                return;
-            }
-            var xlData = target.attributes['data-xl-auth'];
-            if (xlData) {
-                var nodeValue = xlData.nodeValue;
-                if (nodeValue) {
-                    self.login({authType: nodeValue});
+        if (self._options.isMarkupSocialsHandlersEnabled) {
+            document.addEventListener('click', function (e) {
+                var target = findAncestor(e.target);
+                // Do nothing if click was outside of elements with data-xl-auth
+                if (!target) {
+                    return;
                 }
-            }
-        });
+                var xlData = target.attributes['data-xl-auth'];
+                if (xlData) {
+                    var nodeValue = xlData.nodeValue;
+                    if (nodeValue) {
+                        self.login({authType: nodeValue});
+                    }
+                }
+            });
+        }
     }
 }
 /**
@@ -164,6 +170,14 @@ XL.prototype.createErrorObject = function(message, code) {
     };
 };
 
+XL.getProjectId = function() {
+    return window.__xl._options.projectId;
+};
+
+XL.getOptions = function () {
+  return window.__xl._options;
+};
+
 XL.init = function (params) {
     if (!window.__xl) {
         var xl = new XL(params);
@@ -181,17 +195,30 @@ XL.login = function (prop, callback) {
     }
 };
 
-XL.AuthWidget = function (divName, options) {
-    if (!divName) {
-        console.error('No div name!');
-    } else {
-        var html = '<iframe></iframe>';
-        var element = document.getElementById(divName);
-        if (element) {
-            document.getElementById(divName).innerHTML = html;
+XL.AuthWidget = function (elementId, options) {
+    if (window.__xl) {
+        if (!elementId) {
+            console.error('No div name!');
         } else {
-            console.error('Element \"' + divName +'\" not found!');
+            if (options==undefined) {
+                options = {};
+            }
+            var width = options.width || 200;
+            var height = options.height || 400;
+
+            // var styleString = 'boreder:none';
+            var src = 'http://localhost:8080/home/?projectId=' + XL.getProjectId();
+            var html = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';
+
+            var element = document.getElementById(elementId);
+            if (element) {
+                document.getElementById(elementId).innerHTML = html;
+            } else {
+                console.error('Element \"' + elementId +'\" not found!');
+            }
         }
+    } else {
+        console.error('Please run XL.init() first');
     }
 };
 

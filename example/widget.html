@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XL Widget</title>
+    <script type="application/javascript" src="xl.js"></script>
+</head>
+<style>
+    body {
+        font-family: "Helvetic Neue", Helvetica, Arial,sans-serif;
+        background-color: bisque;
+    }
+    .social-link {
+        cursor: pointer;
+    }
+</style>
+<body>
+<div>
+    <div>blah blah blah</div>
+    <div id="xl_widget"></div>
+</div>
+<script type="application/javascript" >
+    window.onload = function () {
+        XL.init({
+            projectId: '40db2ea4-5d42-11e6-a3ff-005056a0e04a',
+            onlyWidgets: true
+        });
+        XL.AuthWidget('xl_widget');
+    }
+</script>
+</body>
+</html>
