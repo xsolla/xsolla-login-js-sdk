@@ -173,9 +173,9 @@ XL.init = function (params) {
     }
 };
 
-XL.login = function (prop, callback) {
+XL.login = function (prop, error, success) {
     if (window.__xl) {
-        window.__xl.login(prop, callback);
+        window.__xl.login(prop, error, success);
     } else {
         console.error('Please run XL.init() first');
     }
