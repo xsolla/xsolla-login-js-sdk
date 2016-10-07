@@ -174,6 +174,10 @@ XL.getProjectId = function() {
     return window.__xl._options.projectId;
 };
 
+XL.getRedirectURL = function () {
+    return window.__xl._options.redirectUrl;
+};
+
 XL.getOptions = function () {
   return window.__xl._options;
 };
@@ -187,9 +191,9 @@ XL.init = function (params) {
     }
 };
 
-XL.login = function (prop, callback) {
+XL.login = function (prop, error, success) {
     if (window.__xl) {
-        window.__xl.login(prop, callback);
+        window.__xl.login(prop, error, success);
     } else {
         console.error('Please run XL.init() first');
     }
@@ -208,14 +212,37 @@ XL.AuthWidget = function (elementId, options) {
 
             // var styleString = 'boreder:none';
             var src = 'http://localhost:8080/home/?projectId=' + XL.getProjectId();
-            var html = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';
+
+            var redirectUrl = XL.getRedirectURL();
+            if (redirectUrl) {
+                src = src + '&redirectUrl='+encodeURIComponent(redirectUrl);
+            }
+
+            // var widgetHtml = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';
+            var widgetIframe = document.createElement('iframe');
+            widgetIframe.onload = function () {
+                element.removeChild(preloader);
+                widgetIframe.style.width = width+'px';
+                widgetIframe.style.height = height+'px';
+            };
+            widgetIframe.style.width = 0;
+            widgetIframe.style.height = 0;
+            widgetIframe.frameBorder = '0';
+            widgetIframe.src = src;
+
+
+            var preloader = document.createElement('div');
+            preloader.innerHTML = 'Loading...';
 
             var element = document.getElementById(elementId);
             if (element) {
-                document.getElementById(elementId).innerHTML = html;
+                element.appendChild(preloader);
+                element.appendChild(widgetIframe);
             } else {
                 console.error('Element \"' + elementId +'\" not found!');
             }
+
+
         }
     } else {
         console.error('Please run XL.init() first');
