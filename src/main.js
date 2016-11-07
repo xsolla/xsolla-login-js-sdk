@@ -1,6 +1,7 @@
 /**
  * Created by a.korotaev on 24.06.16.
  */
+require('./supports');
 
 var XLApi = require('./xlapi');
 /**
@@ -202,4 +203,8 @@ XL.AuthButton = function (divName, options) {
 XL.INVALID_LOGIN_ERROR_CODE = 1;
 XL.INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
 
+
+
 module.exports = XL;
+
+
