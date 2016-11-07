@@ -26,6 +26,7 @@ function XL (options) {
     self._options.maxXLClickDepth = options.maxXLClickDepth || 20;
     self._options.onlyWidgets = options.onlyWidgets || false;
     self._options.projectId = options.projectId;
+    self._options.locale = options.locale || 'en';
 
     var params = {};
     params.projectId = options.projectId;
@@ -178,10 +179,6 @@ XL.getRedirectURL = function () {
     return window.__xl._options.redirectUrl;
 };
 
-XL.getOptions = function () {
-  return window.__xl._options;
-};
-
 XL.init = function (params) {
     if (!window.__xl) {
         var xl = new XL(params);
@@ -211,7 +208,7 @@ XL.AuthWidget = function (elementId, options) {
             var height = options.height || 400;
 
             // var styleString = 'boreder:none';
-            var src = 'http://localhost:8080/home/?projectId=' + XL.getProjectId();
+            var src = 'http://localhost:8080/home/?projectId=' + XL.getProjectId() + '&locale=' + window.__xl._options.locale;
 
             var redirectUrl = XL.getRedirectURL();
             if (redirectUrl) {
@@ -242,7 +239,13 @@ XL.AuthWidget = function (elementId, options) {
                 console.error('Element \"' + elementId +'\" not found!');
             }
 
-
+            // var socket = new easyXDM.Socket({
+            //     remote: src, // the path to the provider,
+            //     container: element,
+            //     onMessage:function(message, origin) {
+            //         //do something with message
+            //     }
+            // });
         }
     } else {
         console.error('Please run XL.init() first');
