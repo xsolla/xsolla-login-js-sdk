@@ -26,7 +26,9 @@ function XL (options) {
     self._options.maxXLClickDepth = options.maxXLClickDepth || 20;
     self._options.onlyWidgets = options.onlyWidgets || false;
     self._options.projectId = options.projectId;
-    self._options.locale = options.locale || 'en';
+    self._options.locale = options.locale || undefined;
+    self._options.fields = options.fields || undefined;
+    self._options.preloader = options.preloader || '<div></div>';
 
     var params = {};
     params.projectId = options.projectId;
@@ -204,12 +206,20 @@ XL.AuthWidget = function (elementId, options) {
             if (options==undefined) {
                 options = {};
             }
-            var width = options.width || 200;
-            var height = options.height || 400;
+            var width = options.width || 400 + 'px';
+            var height = options.height || 550 + 'px';
+
+            var widgetBaseUrl = options.widgetBaseUrl || 'https://xl-widget.xsolla.com/';
 
             // var styleString = 'boreder:none';
-            var src = 'http://localhost:8080/home/?projectId=' + XL.getProjectId() + '&locale=' + window.__xl._options.locale;
+            var src = widgetBaseUrl + '?projectId=' + XL.getProjectId();
 
+            if (window.__xl._options.locale) {
+                src = src + '&locale=' + window.__xl._options.locale;
+            }
+            if (window.__xl._options.fields) {
+                src = src + '&fields=' + window.__xl._options.fields;
+            }
             var redirectUrl = XL.getRedirectURL();
             if (redirectUrl) {
                 src = src + '&redirectUrl='+encodeURIComponent(redirectUrl);
@@ -219,8 +229,8 @@ XL.AuthWidget = function (elementId, options) {
             var widgetIframe = document.createElement('iframe');
             widgetIframe.onload = function () {
                 element.removeChild(preloader);
-                widgetIframe.style.width = width+'px';
-                widgetIframe.style.height = height+'px';
+                widgetIframe.style.width = '100%';
+                widgetIframe.style.height = '100%';
             };
             widgetIframe.style.width = 0;
             widgetIframe.style.height = 0;
@@ -229,10 +239,13 @@ XL.AuthWidget = function (elementId, options) {
 
 
             var preloader = document.createElement('div');
-            preloader.innerHTML = 'Loading...';
+
+            preloader.innerHTML = window.__xl._options.preloader;
 
             var element = document.getElementById(elementId);
             if (element) {
+                element.style.width = width;
+                element.style.height = height;
                 element.appendChild(preloader);
                 element.appendChild(widgetIframe);
             } else {

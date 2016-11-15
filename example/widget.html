@@ -8,7 +8,7 @@
 <style>
     body {
         font-family: "Helvetic Neue", Helvetica, Arial,sans-serif;
-        background-color: bisque;
+        background-color: #297b63;
     }
     .social-link {
         cursor: pointer;
@@ -22,10 +22,13 @@
 <script type="application/javascript" >
     window.onload = function () {
         XL.init({
-            projectId: '40db2ea4-5d42-11e6-a3ff-005056a0e04a',
-            onlyWidgets: true
+            projectId: '8513c380-0336-4927-b351-02ccec7f3cb6',
+            onlyWidgets: true,
+            redirectUrl: 'https://lifeisfeudal.com'
         });
-        XL.AuthWidget('xl_widget');
+        XL.AuthWidget('xl_widget', {
+            widgetBaseUrl: 'https://test-xl-widget.xsolla.com/'
+        });
     }
 </script>
 </body>
