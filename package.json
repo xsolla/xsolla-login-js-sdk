@@ -1,6 +1,6 @@
 {
   "name": "xsolla-login-lib",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "gulp-rename": "1.2.0",
     "gulp-replace-task": "0.2.1",
     "gulp-sourcemaps": "1.5.2",
+    "gulp-traceur": "^0.17.2",
     "gulp-uglify": "1.2.0",
     "gulp-util": "3.0.6",
     "jasmine": "^2.4.1",
