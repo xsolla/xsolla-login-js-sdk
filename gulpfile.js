@@ -27,7 +27,8 @@ function setupBrowserify(watch) {
         paths: ['./src'],
         standalone: 'XL',
         fullPaths: false,
-        debug: true
+        debug: true,
+        transform: [["babelify", { "presets": ["es2015"] }]]
     };
     var bundler = browserify('./src/main.js', bundleOptions);
     bundler.require('./src/main.js', {entry: true, expose: 'main'});
@@ -68,7 +69,6 @@ function runBundle(bundler, watch) {
         .pipe(source('xl.js'))
         .pipe(gulp.dest('./dist'))
         .pipe(buffer())
-        .pipe(traceur())
         .pipe(rename('xl.min.js'))
         .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
         .pipe(uglify())
