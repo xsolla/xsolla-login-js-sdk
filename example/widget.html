@@ -29,6 +29,10 @@
         XL.AuthWidget('xl_widget', {
             widgetBaseUrl: 'https://test-xl-widget.xsolla.com/'
         });
+
+        XL.on(XL.eventTypes.LOAD, function (event, data) {
+            console.log('loaded');
+        });
     }
 </script>
 </body>

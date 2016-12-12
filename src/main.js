@@ -3,6 +3,7 @@
  */
 
 import XLApi from './xlapi';
+import $ from 'jquery';
 /**
  * Create an `Auth0` instance with `options`
  *
@@ -29,6 +30,11 @@ const INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
 class XL {
     constructor() {
         this.socialUrls = {};
+        this.eventObject = $({});
+        this.eventTypes = {
+            LOAD: 'load'
+        };
+        this.postMessage = null;
     }
 
     init(options) {
@@ -189,16 +195,16 @@ class XL {
 
                 // var widgetHtml = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';
                 let widgetIframe = document.createElement('iframe');
-                widgetIframe.onload = function () {
+                widgetIframe.onload = () => {
                     element.removeChild(preloader);
                     widgetIframe.style.width = '100%';
                     widgetIframe.style.height = '100%';
+                    this.triggerEvent(this.eventTypes.LOAD);
                 };
                 widgetIframe.style.width = 0;
                 widgetIframe.style.height = 0;
                 widgetIframe.frameBorder = '0';
                 widgetIframe.src = src;
-
 
                 let preloader = document.createElement('div');
 
@@ -218,6 +224,18 @@ class XL {
         } else {
             console.error('Please run XL.init() first');
         }
+    };
+
+    triggerEvent(){
+        this.eventObject.trigger.apply(this.eventObject, arguments);
+    }
+
+    on(event, handler) {
+        if (!$.isFunction(handler)) {
+            return;
+        }
+
+        this.eventObject.on(event, handler);
     };
 }
 
