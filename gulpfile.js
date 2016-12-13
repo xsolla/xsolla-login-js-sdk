@@ -32,7 +32,6 @@ function setupBrowserify(watch) {
     };
     var bundler = browserify('./src/main.js', bundleOptions);
     bundler.require('./src/main.js', {entry: true, expose: 'main'});
-    bundler.require('./bower_components/jquery/dist/jquery.js', {expose: 'jquery'});
     // bundler.transform({
     //     outputStyle: 'compressed',
     //     base64Encode: false,

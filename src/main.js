@@ -3,7 +3,6 @@
  */
 
 import XLApi from './xlapi';
-import $ from 'jquery';
 /**
  * Create an `Auth0` instance with `options`
  *
@@ -30,17 +29,19 @@ const INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
 class XL {
     constructor() {
         this.socialUrls = {};
-        this.eventObject = $({});
         this.eventTypes = {
             LOAD: 'load',
             CLOSE: 'close'
         };
-        this.postMessage = null;
     }
 
     init(options) {
         this.config = Object.assign({}, DEFAULT_CONFIG, options);
         this.api = new XLApi(options.projectId, this.config.apiUrl);
+
+        Object.keys(this.eventTypes).map((eventKey) => {
+            this.on(this.eventTypes[eventKey]);
+        });
 
         if (!this.config.onlyWidgets) {
 
@@ -200,12 +201,14 @@ class XL {
                     element.removeChild(preloader);
                     widgetIframe.style.width = '100%';
                     widgetIframe.style.height = '100%';
-                    this.triggerEvent(this.eventTypes.LOAD);
+                    let event = new CustomEvent('load');
+                    document.dispatchEvent(event);
                 };
                 widgetIframe.style.width = 0;
                 widgetIframe.style.height = 0;
                 widgetIframe.frameBorder = '0';
                 widgetIframe.src = src;
+                widgetIframe.id = 'XsollaLoginWidgetIframe'
 
                 const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
                 const eventer = window[eventMethod];
@@ -213,14 +216,9 @@ class XL {
 
                 // Listen to message from child window
                 eventer(messageEvent, (e) => {
-                    this.triggerEvent(this.eventTypes[e.data]);
-
-                    switch(e.data) {
-                        case 'CLOSE':
-                            this.onCloseEvent();
-                            break;
-                    }
-                },false);
+                    let event = new CustomEvent(this.eventTypes[e.data]);
+                    document.dispatchEvent(event);
+                }, false);
 
                 const preloader = document.createElement('div');
 
@@ -242,11 +240,10 @@ class XL {
         }
     };
 
-    triggerEvent(){
-        this.eventObject.trigger.apply(this.eventObject, arguments);
+    onCloseEvent() {
+        var element = document.getElementById('XsollaLoginWidgetIframe');
+        element.parentNode.removeChild(element);
     }
-
-    onCloseEvent(){}
 
     /**
      * link event with handler
@@ -255,11 +252,18 @@ class XL {
      */
 
     on(event, handler) {
-        if (!$.isFunction(handler)) {
-            return;
+        handler = handler || null;
+
+        if (event === this.eventTypes.CLOSE) {
+            if (!handler) {
+                handler = this.onCloseEvent;
+            }
+            else {
+                document.removeEventListener(event, this.onCloseEvent);
+            }
         }
 
-        this.eventObject.on(event, handler);
+        document.addEventListener(event, handler);
     };
 }
 

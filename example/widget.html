@@ -16,7 +16,7 @@
 </style>
 <body>
 <div>
-    <div>blah blah blah</div>
+    <div>Xsolla login widget</div>
     <div id="xl_widget"></div>
 </div>
 <script type="application/javascript" >
@@ -30,13 +30,13 @@
             widgetBaseUrl: 'https://test-xl-widget.xsolla.com/'
         });
 
-        XL.on(XL.eventTypes.LOAD, function (event, data) {
+        XL.on(XL.eventTypes.LOAD, function () {
             console.log('loaded');
         });
 
-        XL.on(XL.eventTypes.CLOSE, function (event, data) {
-            console.log('closed');
-        });
+       XL.on(XL.eventTypes.CLOSE, function () {
+           console.log('loaded');
+       });
     }
 </script>
 </body>
