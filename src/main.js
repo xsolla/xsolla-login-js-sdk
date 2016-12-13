@@ -50,7 +50,7 @@ class XL {
                 params.redirect_url = this.config.redirectUrl;
             }
 
-            let updateSocialLinks = () => {
+            const updateSocialLinks = () => {
                 this.api.getSocialsURLs((response) => {
                     this.socialUrls = {};
                     for (let key in response) {
@@ -66,7 +66,7 @@ class XL {
             updateSocialLinks();
             setInterval(updateSocialLinks, 1000 * 60 * 59);
 
-            let maxClickDepth = this.config.maxXLClickDepth;
+            const maxClickDepth = this.config.maxXLClickDepth;
             // Find closest ancestor with data-xl-auth attribute
             function findAncestor(el) {
                 if (el.attributes['data-xl-auth']) {
@@ -79,12 +79,12 @@ class XL {
 
             if (this.config.isMarkupSocialsHandlersEnabled) {
                 document.addEventListener('click', (e) => {
-                    let target = findAncestor(e.target);
+                    const target = findAncestor(e.target);
                     // Do nothing if click was outside of elements with data-xl-auth
                     if (!target) {
                         return;
                     }
-                    let xlData = target.attributes['data-xl-auth'];
+                    const xlData = target.attributes['data-xl-auth'];
                     if (xlData) {
                         let nodeValue = xlData.nodeValue;
                         if (nodeValue) {
@@ -114,7 +114,7 @@ class XL {
          */
         if (prop.authType) {
             if (prop.authType.startsWith('sn-')) {
-                var socialUrl = this.socialUrls[prop.authType];
+                const socialUrl = this.socialUrls[prop.authType];
                 if (socialUrl != undefined) {
                     window.location.href = this.socialUrls[prop.authType];
                 } else {
@@ -124,7 +124,7 @@ class XL {
             } else if (prop.authType == 'login-pass') {
                 this.api.loginPassAuth(prop.login, prop.pass, prop.rememberMe, this.config.redirectUrl, (res) => {
                     if (res.login_url) {
-                        var finishAuth = function () {
+                        const finishAuth = function () {
                             window.location.href = res.login_url;
                         };
                         if (success) {
@@ -175,10 +175,10 @@ class XL {
                 if (options == undefined) {
                     options = {};
                 }
-                let width = options.width || 400 + 'px';
-                let height = options.height || 550 + 'px';
+                const width = options.width || 400 + 'px';
+                const height = options.height || 550 + 'px';
 
-                let widgetBaseUrl = options.widgetBaseUrl || 'https://xl-widget.xsolla.com/';
+                const widgetBaseUrl = options.widgetBaseUrl || 'https://xl-widget.xsolla.com/';
 
                 // var styleString = 'boreder:none';
                 let src = widgetBaseUrl + '?projectId=' + this.getProjectId();
@@ -189,13 +189,13 @@ class XL {
                 if (this.config.fields) {
                     src = src + '&fields=' + this.config.fields;
                 }
-                let redirectUrl = this.getRedirectURL();
+                const redirectUrl = this.getRedirectURL();
                 if (redirectUrl) {
                     src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
                 }
 
                 // var widgetHtml = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';
-                let widgetIframe = document.createElement('iframe');
+                const widgetIframe = document.createElement('iframe');
                 widgetIframe.onload = () => {
                     element.removeChild(preloader);
                     widgetIframe.style.width = '100%';
@@ -207,20 +207,26 @@ class XL {
                 widgetIframe.frameBorder = '0';
                 widgetIframe.src = src;
 
-                let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-                let eventer = window[eventMethod];
-                let messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+                const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+                const eventer = window[eventMethod];
+                const messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
 
                 // Listen to message from child window
                 eventer(messageEvent, (e) => {
                     this.triggerEvent(this.eventTypes[e.data]);
+
+                    switch(e.data) {
+                        case 'CLOSE':
+                            this.onCloseEvent();
+                            break;
+                    }
                 },false);
 
-                let preloader = document.createElement('div');
+                const preloader = document.createElement('div');
 
                 preloader.innerHTML = this.config.preloader;
 
-                let element = document.getElementById(elementId);
+                const element = document.getElementById(elementId);
                 if (element) {
                     element.style.width = width;
                     element.style.height = height;
@@ -240,6 +246,14 @@ class XL {
         this.eventObject.trigger.apply(this.eventObject, arguments);
     }
 
+    onCloseEvent(){}
+
+    /**
+     * link event with handler
+     * @param event
+     * @param handler
+     */
+
     on(event, handler) {
         if (!$.isFunction(handler)) {
             return;
@@ -249,6 +263,6 @@ class XL {
     };
 }
 
-var result = new XL();
+const result = new XL();
 
 module.exports = result;
