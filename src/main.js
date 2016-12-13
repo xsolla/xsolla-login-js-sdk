@@ -32,7 +32,8 @@ class XL {
         this.socialUrls = {};
         this.eventObject = $({});
         this.eventTypes = {
-            LOAD: 'load'
+            LOAD: 'load',
+            CLOSE: 'close'
         };
         this.postMessage = null;
     }
@@ -205,6 +206,15 @@ class XL {
                 widgetIframe.style.height = 0;
                 widgetIframe.frameBorder = '0';
                 widgetIframe.src = src;
+
+                let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+                let eventer = window[eventMethod];
+                let messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+                // Listen to message from child window
+                eventer(messageEvent, (e) => {
+                    this.triggerEvent(this.eventTypes[e.data]);
+                },false);
 
                 let preloader = document.createElement('div');
 

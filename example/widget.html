@@ -33,6 +33,10 @@
         XL.on(XL.eventTypes.LOAD, function (event, data) {
             console.log('loaded');
         });
+
+        XL.on(XL.eventTypes.CLOSE, function (event, data) {
+            console.log('closed');
+        });
     }
 </script>
 </body>
