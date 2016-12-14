@@ -97,5 +97,19 @@ login      | user's login
 pass       | user's password
 rememberMe | Whether browser should remember this user's auth
 
+### Events
+
+* **load** — Event after widget was loaded
+* **close** — Event after widget was closed
+
+You can access list of event using XL.eventTypes object.
+
+#### Example
+
+``` javascript
+XL.on(XL.eventTypes.LOAD, function () {
+    console.log('loaded');
+});
+```
 
 
