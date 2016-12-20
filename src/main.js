@@ -1,6 +1,7 @@
 /**
  * Created by a.korotaev on 24.06.16.
  */
+require('./supports');
 
 import XLApi from './xlapi';
 /**
