@@ -16,7 +16,6 @@ var stringify = require('stringify');
 var watchify = require('watchify');
 var gulpif = require('gulp-if');
 var plumber = require('gulp-plumber');
-var traceur = require('gulp-traceur');
 
 var Server = require('karma').Server;
 
