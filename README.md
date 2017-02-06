@@ -100,7 +100,7 @@ rememberMe | Whether browser should remember this user's auth
 ### Events
 
 * **load** — Event after widget was loaded
-* **close** — Event after close button was clicked (by default widget will be closed, but if you pass your own fuction you should close it yourself)
+* **close** — Event after close button was clicked (by default widget will be closed, but if you pass your own function you should close it yourself)
 
 You can access list of event using XL.eventTypes object.
 
