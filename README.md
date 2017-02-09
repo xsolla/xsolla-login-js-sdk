@@ -8,7 +8,7 @@ To use the SDK in the browser, simply add the following script tag to your
 HTML pages:
 
 ```html
-<script src="https://static.xsolla.com/xsolla-login/1.0.1/js-sdk.min.js"></script>
+<script src="https://static.xsolla.com/xsolla-login/1.1.0/xl.min.js"></script>
 ```
 ### Using Bower
 
@@ -97,5 +97,19 @@ login      | user's login
 pass       | user's password
 rememberMe | Whether browser should remember this user's auth
 
+### Events
+
+* **load** — Event after widget was loaded
+* **close** — Event after close button was clicked (by default widget will be closed, but if you pass your own function you should close it yourself)
+
+You can access list of event using XL.eventTypes object.
+
+#### Example
+
+``` javascript
+XL.on(XL.eventTypes.LOAD, function () {
+    console.log('loaded');
+});
+```
 
 

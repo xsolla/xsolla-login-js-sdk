@@ -3,12 +3,17 @@
   "authors": [
     "Arseny Korotaev <a.korotaev@xsolla.com>"
   ],
-  "description": "",
-  "main": "",
+  "description": "The library allows you to quickly integrate Xsolla Login into your project.",
+  "keywords": [
+    "xsolla",
+    "login",
+    "sdk",
+    "js"
+  ],
+  "main": "dist/xl.js",
   "moduleType": [],
   "license": "MIT",
   "homepage": "",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
