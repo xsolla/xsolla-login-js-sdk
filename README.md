@@ -8,7 +8,7 @@ To use the SDK in the browser, simply add the following script tag to your
 HTML pages:
 
 ```html
-<script src="https://static.xsolla.com/xsolla-login/1.0.1/js-sdk.min.js"></script>
+<script src="https://static.xsolla.com/xsolla-login/1.1.0/js-sdk.min.js"></script>
 ```
 ### Using Bower
 
