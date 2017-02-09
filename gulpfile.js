@@ -26,29 +26,11 @@ function setupBrowserify(watch) {
         paths: ['./src'],
         standalone: 'XL',
         fullPaths: false,
-        debug: true
+        debug: true,
+        transform: [["babelify", { "presets": ["es2015"] }]]
     };
     var bundler = browserify('./src/main.js', bundleOptions);
     bundler.require('./src/main.js', {entry: true, expose: 'main'});
-    // bundler.transform({
-    //     outputStyle: 'compressed',
-    //     base64Encode: false,
-    //     'auto-inject': true
-    // }, sassify);
-
-    // bundler.transform(stringify({
-    //     extensions: ['.svg'],
-    //     minify: true,
-    //     minifier: {
-    //         extensions: ['.svg'],
-    //         options: {
-    //             removeComments: true,
-    //             removeCommentsFromCDATA: true,
-    //             removeCDATASectionsFromCDATA: true,
-    //             collapseWhitespace: true
-    //         }
-    //     }
-    // }));
 
     if (watch) {
         bundler = watchify(bundler);
