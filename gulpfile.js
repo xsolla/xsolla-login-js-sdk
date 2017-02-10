@@ -27,7 +27,7 @@ function setupBrowserify(watch) {
         standalone: 'XL',
         fullPaths: false,
         debug: true,
-        transform: [["babelify", { "presets": ["es2015"] }]]
+        transform: [["babelify", { "presets": ["es2015"], "plugins": ["transform-object-assign"] }]]
     };
     var bundler = browserify('./src/main.js', bundleOptions);
     bundler.require('./src/main.js', {entry: true, expose: 'main'});
