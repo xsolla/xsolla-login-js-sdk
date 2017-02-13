@@ -34,6 +34,7 @@ class XL {
             LOAD: 'load',
             CLOSE: 'close'
         };
+        this.dispatcher = document.createElement('div');
     }
 
     init(options) {
@@ -177,8 +178,8 @@ class XL {
                 if (options == undefined) {
                     options = {};
                 }
-                const width = options.width || 400 + 'px';
-                const height = options.height || 550 + 'px';
+                const width = `${options.width || 400}px`;
+                const height = `${options.height || 550}px`;
 
                 const widgetBaseUrl = options.widgetBaseUrl || 'https://xl-widget.xsolla.com/';
 
@@ -203,7 +204,7 @@ class XL {
                     widgetIframe.style.width = '100%';
                     widgetIframe.style.height = '100%';
                     let event = new CustomEvent('load');
-                    document.dispatchEvent(event);
+                    this.dispatcher.dispatchEvent(event);
                 };
                 widgetIframe.style.width = 0;
                 widgetIframe.style.height = 0;
@@ -218,7 +219,7 @@ class XL {
                 // Listen to message from child window
                 eventer(messageEvent, (e) => {
                     let event = new CustomEvent(this.eventTypes[e.data]);
-                    document.dispatchEvent(event);
+                    this.dispatcher.dispatchEvent(event);
                 }, false);
 
                 const preloader = document.createElement('div');
@@ -260,11 +261,11 @@ class XL {
                 handler = this.onCloseEvent;
             }
             else {
-                document.removeEventListener(event, this.onCloseEvent);
+                this.dispatcher.removeEventListener(event, this.onCloseEvent);
             }
         }
 
-        document.addEventListener(event, handler);
+        this.dispatcher.addEventListener(event, handler);
     };
 }
 

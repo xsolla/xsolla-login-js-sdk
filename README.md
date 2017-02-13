@@ -8,7 +8,7 @@ To use the SDK in the browser, simply add the following script tag to your
 HTML pages:
 
 ```html
-<script src="https://static.xsolla.com/xsolla-login/1.1.0/xl.min.js"></script>
+<script src="https://static.xsolla.com/xsolla-login/1.1.1/xl.min.js"></script>
 ```
 ### Using Bower
 
@@ -50,6 +50,37 @@ SDK supports two types of integration:
 1. API call integration
 
 You can mix intefration types within project.
+
+### Authentication widget 
+You can add a standard authentication widget using the example below. The layout can be customized using CSS. 
+The default block width is 400 px; the height depends on the authentication options.
+
+To add an Xsolla Login widget to your game:
+1. Enable js-sdk.js in the `<head>` tag: 
+1. Add the initialization code in the `<body>` tag: 
+
+```html
+     <script type="text/javascript">
+     XL.init({
+             projectId: '40db2ea4-5p47-11e6-a3ff-005056a0e04a',
+             locale: 'en_US',
+             onlyWidgets: true,
+             redirectUrl: '<your redirect url>',
+             fields: 'email'
+         });
+     </script>
+     
+     <div id="xl_auth"></div>
+     <script type="text/javascript">
+     var element_id = 'xl_auth';
+     var options = {
+         width: '200px',
+         height: '200px'
+     };
+     XL.AuthWidget(element_id, options);
+     </script>
+```
+
 ### Markup Integration
 You can integrate Xsolla Login simply mark your code html controls with `data-xl-auth=""` attribute so SDK automatically applies appropriate `onclick` handler.
 
