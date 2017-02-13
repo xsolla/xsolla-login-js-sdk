@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.1 - 2017-02-10
+## 1.1.1 - 2017-02-13
 
 - [fix] Compatibility with IE 11
 
