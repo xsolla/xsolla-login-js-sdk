@@ -66,6 +66,7 @@ To add an Xsolla Login widget to your game:
              locale: 'en_US',
              onlyWidgets: true,
              redirectUrl: '<your redirect url>',
+             loginUrl: '<your login url>',
              fields: 'email'
          });
      </script>
