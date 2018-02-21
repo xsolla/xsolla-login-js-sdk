@@ -204,7 +204,7 @@ class XL {
                     src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
                 }
 
-                const loginUrl = this.geloginUrl();
+                const loginUrl = this.getLoginUrl();
                 if (loginUrl) {
                      src = src + '&login_url=' + encodeURIComponent(loginUrl);
                 }
