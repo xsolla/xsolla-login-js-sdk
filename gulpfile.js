@@ -11,11 +11,8 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var browserSync = require('browser-sync');
 var browserify = require('browserify');
-var sassify = require('sassify');
-var stringify = require('stringify');
 var watchify = require('watchify');
 var gulpif = require('gulp-if');
-var plumber = require('gulp-plumber');
 
 var Server = require('karma').Server;
 

@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
+    "build": "gulp build",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch"
   },
@@ -25,7 +26,6 @@
     "fs": "0.0.2",
     "gulp": "3.9.0",
     "gulp-if": "1.2.5",
-    "gulp-plumber": "^1.1.0",
     "gulp-rename": "1.2.0",
     "gulp-replace-task": "0.2.1",
     "gulp-sourcemaps": "1.5.2",
@@ -38,8 +38,6 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.1",
     "phantomjs": "^2.1.3",
-    "sassify": "0.9.1",
-    "stringify": "3.1.0",
     "superagent": "^2.2.0",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",

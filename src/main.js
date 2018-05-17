@@ -52,6 +52,9 @@ class XL {
             if (this.config.redirectUrl) {
                 params.redirect_url = this.config.redirectUrl;
             }
+            if (this.config.loginUrl) {
+                params.login_url = this.config.loginUrl;
+            }
 
             const updateSocialLinks = () => {
                 this.api.getSocialsURLs((response) => {
@@ -170,6 +173,10 @@ class XL {
         return this.config.redirectUrl;
     };
 
+    getLoginUrl() {
+        return this.config.loginUrl;
+    };
+
     AuthWidget(elementId, options) {
         if (this.api) {
             if (!elementId) {
@@ -195,6 +202,11 @@ class XL {
                 const redirectUrl = this.getRedirectURL();
                 if (redirectUrl) {
                     src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
+                }
+
+                const loginUrl = this.getLoginUrl();
+                if (loginUrl) {
+                     src = src + '&login_url=' + encodeURIComponent(loginUrl);
                 }
 
                 // var widgetHtml = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';

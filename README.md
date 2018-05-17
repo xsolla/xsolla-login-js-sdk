@@ -8,7 +8,7 @@ To use the SDK in the browser, simply add the following script tag to your
 HTML pages:
 
 ```html
-<script src="https://static.xsolla.com/xsolla-login/1.1.1/xl.min.js"></script>
+<script src="https://cdn.xsolla.net/xsolla-login-widget/sdk/1.2.1/xl.min.js"></script>
 ```
 ### Using Bower
 
@@ -66,6 +66,7 @@ To add an Xsolla Login widget to your game:
              locale: 'en_US',
              onlyWidgets: true,
              redirectUrl: '<your redirect url>',
+             loginUrl: '<your login url>',
              fields: 'email'
          });
      </script>
