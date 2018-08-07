@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1 - 2018-08-01
+
+- [feature] Added parameter for setting Widget theme
+- [feature] Added parameter for opening Widget at specific route
+
 ## 1.1.1 - 2017-02-13
 
 - [fix] Compatibility with IE 11

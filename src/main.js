@@ -21,6 +21,7 @@ const DEFAULT_CONFIG = {
     apiUrl: '//login.xsolla.com/api/',
     maxXLClickDepth: 20,
     onlyWidgets: false,
+    theme: 'app.default.css',
     preloader: '<div></div>'
 };
 
@@ -34,6 +35,14 @@ class XL {
             LOAD: 'load',
             CLOSE: 'close'
         };
+
+        this.ROUTES = {
+            LOGIN: '',
+            REGISTRATION: 'registration',
+            RECOVER_PASSWORD: 'reset-password',
+            ALL_SOCIALS: 'other'
+        };
+
         this.dispatcher = document.createElement('div');
     }
 
@@ -173,6 +182,10 @@ class XL {
         return this.config.redirectUrl;
     };
 
+    getTheme() {
+        return this.config.theme;
+    }
+
     getLoginUrl() {
         return this.config.loginUrl;
     };
@@ -190,8 +203,9 @@ class XL {
 
                 const widgetBaseUrl = options.widgetBaseUrl || 'https://xl-widget.xsolla.com/';
 
-                // var styleString = 'boreder:none';
-                let src = widgetBaseUrl + '?projectId=' + this.getProjectId();
+                const route = options.route || this.ROUTES.LOGIN;
+
+                let src = widgetBaseUrl + route + '?projectId=' + this.getProjectId();
 
                 if (this.config.locale) {
                     src = src + '&locale=' + this.config.locale;
@@ -209,7 +223,11 @@ class XL {
                      src = src + '&login_url=' + encodeURIComponent(loginUrl);
                 }
 
-                // var widgetHtml = '<iframe frameborder="0" width="'+width+'" height="'+height+'"  src="'+src+'">Not supported</iframe>';
+                const theme = this.getTheme();
+                if (theme) {
+                    src = src + '&theme=' + encodeURIComponent(theme);
+                }
+
                 const widgetIframe = document.createElement('iframe');
                 widgetIframe.onload = () => {
                     element.removeChild(preloader);
@@ -222,7 +240,7 @@ class XL {
                 widgetIframe.style.height = 0;
                 widgetIframe.frameBorder = '0';
                 widgetIframe.src = src;
-                widgetIframe.id = 'XsollaLoginWidgetIframe'
+                widgetIframe.id = 'XsollaLoginWidgetIframe';
 
                 const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
                 const eventer = window[eventMethod];
