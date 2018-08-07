@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.3.0 - 2018-08-01
+## 1.3.1 - 2018-08-01
 
 - [feature] Added parameter for setting Widget theme
 - [feature] Added parameter for opening Widget at specific route

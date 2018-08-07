@@ -40,7 +40,7 @@ class XL {
             LOGIN: '',
             REGISTRATION: 'registration',
             RECOVER_PASSWORD: 'reset-password',
-            ALL_SOCIALS: 'others'
+            ALL_SOCIALS: 'other'
         };
 
         this.dispatcher = document.createElement('div');
