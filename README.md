@@ -37,8 +37,8 @@ XL.init({
 ```
 Parameter | Decsription
 ------------|----
-`projectId` | Project ID. **Required**.
-`login_url` | URL Xsolla redirects the user to after authentication.
+`projectId` | **Required.** Project ID.
+`loginUrl` | **Required.** Callback URL for redirecting after successful authentication.
 `locale` | User regional settings.
 `onlyWidgets` | Whether the Login Widget UI is used. *true* by default.
 `fields` | List of parameters required to complete the registration, separated by commas.
