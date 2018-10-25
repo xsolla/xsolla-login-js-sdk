@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 - 2018-10-22
+
+- [build] Updated dependencies
+
 ## 1.3.1 - 2018-08-01
 
 - [feature] Added parameter for setting Widget theme
