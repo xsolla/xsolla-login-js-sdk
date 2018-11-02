@@ -27,18 +27,17 @@ Add the widget initialization code to the `<body>` tag.
 <script type="text/javascript">
 XL.init({
   projectId: '{your Login projectId}',
-  loginUrl: '{your login_url}',
+  loginUrl: '{your loginUrl}',
   locale: 'en_US',
   onlyWidgets: true,
-  fields: 'email',
-  theme: '{your URL with css}'
+  fields: 'email'
 });
 </script>
 ```
 Parameter | Decsription
 ------------|----
 `projectId` | Project ID. **Required**.
-`login_url` | URL Xsolla redirects the user to after authentication.
+`loginUrl` | URL to redirect the user to after authentication. Must be identical to **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
 `locale` | User regional settings.
 `onlyWidgets` | Whether the Login Widget UI is used. *true* by default.
 `fields` | List of parameters required to complete the registration, separated by commas.
@@ -63,6 +62,7 @@ XL.AuthWidget(element_id, options);
 Parameter | Decsription
 ------------|----
 `element_id` | ID of the block containing the Login Widget. **Required**.
+`options` | Login Widget block settings. The object consists of the parameters listed below.
 `width` | Block width. Default value: `450`.
 `height` | Block height. Default value: `550`.
 `route` | Widget start page. Can be: `XL.ROUTES.LOGIN`(by default), `XL.ROUTES.REGISTRATION`, `XL.ROUTES.RECOVER_PASSWORD`, `XL.ROUTES.ALL_SOCIALS`.
