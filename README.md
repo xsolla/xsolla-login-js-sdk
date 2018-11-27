@@ -63,6 +63,6 @@ Parameter | Decsription
 ------------|----
 `element_id` | ID of the block containing the Login Widget. **Required**.
 `options` | Login Widget block settings. The object consists of the parameters listed below.
-`width` | Block width. Default value: `450`.
-`height` | Block height. Default value: `550`.
+`width` | Block width in pixels. Default value: `450`.
+`height` | Block height in pixels. Default value: `550`.
 `route` | Widget start page. Can be: `XL.ROUTES.LOGIN`(by default), `XL.ROUTES.REGISTRATION`, `XL.ROUTES.RECOVER_PASSWORD`, `XL.ROUTES.ALL_SOCIALS`.
