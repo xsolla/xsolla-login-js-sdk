@@ -52,8 +52,8 @@ Add the block to contain the widget to the `<body>` tag. Specify the block’s I
 <script type="text/javascript">
 var element_id = 'xl_auth';
 var options = {
-  width: '450px',
-  height: '650px',
+  width: 450,
+  height: 650,
   route: XL.ROUTES.REGISTRATION
 };
 XL.AuthWidget(element_id, options);
