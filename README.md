@@ -1,6 +1,6 @@
-# Xsolla Login Javascript SDK
+See [documentation](https://developers.xsolla.com/doc/login/) for full Xsolla Login Widget integration.
 
-The library allows you to quickly integrate Xsolla Login Widget with your website.  
+This library allows you to quickly integrate Xsolla Login Widget with your website.
 
 Currently SDK supports following types of authorization:
 * via login/password
@@ -26,8 +26,8 @@ Add the widget initialization code to the `<body>` tag.
 ```html
 <script type="text/javascript">
 XL.init({
-  projectId: '{your Login projectId}',
-  loginUrl: '{your loginUrl}',
+  projectId: '{Login projectId}',
+  loginUrl: '{loginUrl}',
   locale: 'en_US',
   onlyWidgets: true,
   fields: 'email'
@@ -36,7 +36,7 @@ XL.init({
 ```
 Parameter | Decsription
 ------------|----
-`projectId` | Project ID. **Required**.
+`projectId` | Login ID from Publisher Account. **Required**.
 `loginUrl` | URL to redirect the user to after authentication. Must be identical to **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
 `locale` | User regional settings.
 `onlyWidgets` | Whether the Login Widget UI is used. *true* by default.
@@ -52,8 +52,8 @@ Add the block to contain the widget to the `<body>` tag. Specify the block’s I
 <script type="text/javascript">
 var element_id = 'xl_auth';
 var options = {
-  width: '450px',
-  height: '650px',
+  width: 400,
+  height: 550,
   route: XL.ROUTES.REGISTRATION
 };
 XL.AuthWidget(element_id, options);
@@ -63,6 +63,6 @@ Parameter | Decsription
 ------------|----
 `element_id` | ID of the block containing the Login Widget. **Required**.
 `options` | Login Widget block settings. The object consists of the parameters listed below.
-`width` | Block width. Default value: `450`.
-`height` | Block height. Default value: `550`.
+`width` | Block width in pixels. Default is 400.
+`height` | Block height in pixels. Default is 550.
 `route` | Widget start page. Can be: `XL.ROUTES.LOGIN`(by default), `XL.ROUTES.REGISTRATION`, `XL.ROUTES.RECOVER_PASSWORD`, `XL.ROUTES.ALL_SOCIALS`.
