@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Popup Example</title>
+    <script type="application/javascript" src="./../dist/xl.js"></script>
+</head>
+<body>
+    <button id="myBtn" class="myBtn" onclick="XL.show()">Full screen</button>
+
+    <div id="xl_widget"></div>
+</body>
+</html>
+<script>
+    window.onload = function () {
+        XL.init({
+            projectId: '970796ff-cae5-4460-9d03-44e7b3a40d7e',
+            redirectUrl: 'https://www.runeragnarok.com/portal/',
+            callbackUrl: 'https://runeragnarok.com/portal',
+            popUpBckgrColor: '#a9dcac'
+        });
+        XL.AuthWidget('xl_widget', {
+            widgetBaseUrl: 'http://localhost:3000/'
+        });
+
+        XL.on(XL.eventTypes.HIDE_POPUP, function () {
+            console.log('hide_popup');
+        });
+
+        XL.on(XL.eventTypes.LOAD, function () {
+            console.log('loaded');
+        });
+
+        XL.on(XL.eventTypes.CLOSE, function () {
+            console.log('closed');
+        });
+    };
+</script>
+<style>
+    .myBtn{
+        width: 100px;
+        height: 50px;
+        border-radius: 5px;
+        background-color: #49c776;
+        font-size: 14pt;
+        border-color: black;
+    }
+</style>
