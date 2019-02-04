@@ -288,13 +288,10 @@ class XL {
     };
 
     onCloseEvent() {
-        var element = document.getElementById('XsollaLoginWidgetIframe');
-        element.parentNode.removeChild(element);
+        widgetIframe.parentNode.removeChild(widgetIframe);
     }
 
     onHideEvent() {
-        const  widgetIframe = document.getElementById('XsollaLoginWidgetIframe');
-
         widgetIframe.style.position = '';
         widgetIframe.style.zIndex = '';
         widgetIframe.style.left = '';
