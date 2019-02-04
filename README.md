@@ -17,7 +17,7 @@ bower install xsolla-login-js-sdk
 ```
 * If you don’t have the package installed, add the following code to the `<head>` tag of the web page where you want to place the widget: 
 ```
-<script src="https://cdn.xsolla.net/xsolla-login-widget/sdk/1.3.2/xl.min.js"></script>
+<script src="https://cdn.xsolla.net/xsolla-login-widget/sdk/1.4.0/xl.min.js"></script>
 ```
 
 ## Step 2
@@ -27,21 +27,21 @@ Add the widget initialization code to the `<body>` tag.
 <script type="text/javascript">
 XL.init({
   projectId: '{Login projectId}',
-  loginUrl: '{loginUrl}',
+  callbackUrl: '{callbackUrl}',
   locale: 'en_US',
-  onlyWidgets: true,
   fields: 'email'
 });
 </script>
 ```
-Parameter | Decsription
+Parameter | Description
 ------------|----
 `projectId` | Login ID from Publisher Account. **Required**.
-`loginUrl` | URL to redirect the user to after authentication. Must be identical to **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
+`callbackUrl` | URL to redirect the user to after authentication. Must be identical to **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
 `locale` | User regional settings.
-`onlyWidgets` | Whether the Login Widget UI is used. *true* by default.
 `fields` | List of parameters required to complete the registration, separated by commas.
 `theme` | URL with the widget styles file. If the value is empty, styles uploaded to Publisher Account are used.
+`popupBackgroundColor` | Background color in the fullscreen mode. The value can be in any of the CSS color formats. Default is 'rgba(50, 150, 150, 0.1)'.
+`iframeZIndex` | Specifies the stack order of the widget. Default is '1000000'.
 
 ## Step 3
 
@@ -59,10 +59,18 @@ var options = {
 XL.AuthWidget(element_id, options);
 </script>
 ```
-Parameter | Decsription
+Parameter | Description
 ------------|----
 `element_id` | ID of the block containing the Login Widget. **Required**.
 `options` | Login Widget block settings. The object consists of the parameters listed below.
 `width` | Block width in pixels. Default is 400.
 `height` | Block height in pixels. Default is 550.
 `route` | Widget start page. Can be: `XL.ROUTES.LOGIN`(by default), `XL.ROUTES.REGISTRATION`, `XL.ROUTES.RECOVER_PASSWORD`, `XL.ROUTES.ALL_SOCIALS`.
+
+## Fullscreen mode
+
+To open the widget in the fullscreen mode, add the button with an on-click event to your website and call the **XL.Show()** function. The fullscreen mode is closed by clicking outside of the widget.
+
+``` html
+<button onclick="XL.show()">Fullscreen widget</button>
+```
