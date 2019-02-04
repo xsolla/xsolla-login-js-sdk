@@ -21,13 +21,15 @@ const DEFAULT_CONFIG = {
     apiUrl: '//login.xsolla.com/api/',
     maxXLClickDepth: 20,
     onlyWidgets: false,
-    popUpBckgrColor: '#bbbbbb',
+    popupBackgroundColor: 'rgb(187, 187, 187)',
     theme: 'app.default.css',
     preloader: '<div></div>'
 };
 
 const INVALID_LOGIN_ERROR_CODE = 1;
 const INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
+
+const widgetIframe = document.createElement('iframe');
 
 class XL {
     constructor() {
@@ -50,16 +52,15 @@ class XL {
 
     init(options) {
         this.config = Object.assign({}, DEFAULT_CONFIG, options);
-        this.config.popUpBckgrColor = DEFAULT_CONFIG.popUpBckgrColor;
+        this.config.popupBackgroundColor = DEFAULT_CONFIG.popupBackgroundColor;
         this.api = new XLApi(options.projectId, this.config.apiUrl);
 
         Object.keys(this.eventTypes).map((eventKey) => {
             this.on(this.eventTypes[eventKey]);
         });
 
-        if(options.popUpBckgrColor) {
-            let isOk  = /^#[0-9A-F]{6}$/i.test(options.popUpBckgrColor);
-            if (isOk) this.config.popUpBckgrColor = options.popUpBckgrColor;
+        if(options.popupBackgroundColor) {
+            this.config.popupBackgroundColor = options.popupBackgroundColor;
         }
 
         this.dispatcher.addEventListener(this.eventTypes.HIDE_POPUP, this.onHideEvent);
@@ -199,12 +200,9 @@ class XL {
         return this.config.theme;
     }
 
-    getLoginUrl() {
-        return this.config.loginUrl;
-    };
-
     getCallbackUrl() {
-        return this.config.callbackUrl;
+        if (this.config.loginUrl) return this.config.loginUrl;
+        else return this.config.callbackUrl
     };
 
     AuthWidget(elementId, options) {
@@ -235,15 +233,10 @@ class XL {
                     src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
                 }
 
-                const loginUrl = this.getLoginUrl();
                 const callbackUrl = this.getCallbackUrl();
 
-                if (loginUrl) {
-                     src = src + '&login_url=' + encodeURIComponent(loginUrl);
-                } else {
-                    if (callbackUrl) {
-                        src = src + '&login_url=' + encodeURIComponent(callbackUrl);
-                    }
+                if (callbackUrl) {
+                    src = src + '&login_url=' + encodeURIComponent(callbackUrl);
                 }
 
                 const theme = this.getTheme();
@@ -251,7 +244,6 @@ class XL {
                     src = src + '&theme=' + encodeURIComponent(theme);
                 }
 
-                const widgetIframe = document.createElement('iframe');
                 widgetIframe.onload = () => {
                     element.removeChild(preloader);
                     widgetIframe.style.width = '100%';
@@ -336,8 +328,6 @@ class XL {
      */
 
     show() {
-        const  widgetIframe = document.getElementById('XsollaLoginWidgetIframe');
-
         if (widgetIframe !== undefined) {
             widgetIframe.style.position = 'fixed';
             widgetIframe.style.zIndex = '1';
@@ -345,7 +335,7 @@ class XL {
             widgetIframe.style.top = '0';
             widgetIframe.style.width = '100%';
             widgetIframe.style.height = '100%';
-            widgetIframe.style.backgroundColor = this.config.popUpBckgrColor;
+            widgetIframe.style.backgroundColor = this.config.popupBackgroundColor;
         }
     };
 }
