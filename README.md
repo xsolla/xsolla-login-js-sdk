@@ -34,7 +34,7 @@ XL.init({
 });
 </script>
 ```
-Parameter | Decsription
+Parameter | Description
 ------------|----
 `projectId` | Login ID from Publisher Account. **Required**.
 `callbackUrl` | URL to redirect the user to after authentication. Must be identical to **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
@@ -61,7 +61,7 @@ var options = {
 XL.AuthWidget(element_id, options);
 </script>
 ```
-Parameter | Decsription
+Parameter | Description
 ------------|----
 `element_id` | ID of the block containing the Login Widget. **Required**.
 `options` | Login Widget block settings. The object consists of the parameters listed below.
