@@ -30,8 +30,7 @@ XL.init({
   callbackUrl: '{callbackUrl}',
   locale: 'en_US',
   onlyWidgets: true,
-  fields: 'email',
-  popupBackgroundColor: 'rgba(50, 150, 150, 0.1)'
+  fields: 'email'
 });
 </script>
 ```
@@ -43,7 +42,8 @@ Parameter | Decsription
 `onlyWidgets` | Whether the Login Widget UI is used. *true* by default.
 `fields` | List of parameters required to complete the registration, separated by commas.
 `theme` | URL with the widget styles file. If the value is empty, styles uploaded to Publisher Account are used.
-`popupBackgroundColor` | Color for background of fullscreen popup window
+`popupBackgroundColor` | Color for background of fullscreen popup window. Accept any CSS legal color values. *'rgba(50, 150, 150, 0.1)'* by default
+`iframeZIndex` | Sets the stack order of fullscreen popup. *1000000* by default.
 
 ## Step 3
 
