@@ -39,7 +39,6 @@ Parameter | Description
 `projectId` | Login ID from Publisher Account. **Required**.
 `callbackUrl` | URL to redirect the user to after authentication. Must be identical to **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
 `locale` | User regional settings.
-`onlyWidgets` | Whether the Login Widget UI is used. *true* by default.
 `fields` | List of parameters required to complete the registration, separated by commas.
 `theme` | URL with the widget styles file. If the value is empty, styles uploaded to Publisher Account are used.
 `popupBackgroundColor` | Color for background of fullscreen popup window. Accept any CSS legal color values. *'rgba(50, 150, 150, 0.1)'* by default
