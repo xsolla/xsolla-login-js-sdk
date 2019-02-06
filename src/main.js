@@ -22,6 +22,7 @@ const DEFAULT_CONFIG = {
     maxXLClickDepth: 20,
     onlyWidgets: false,
     popupBackgroundColor: 'rgb(187, 187, 187)',
+    iframeZIndex: 1000000,
     theme: 'app.default.css',
     preloader: '<div></div>'
 };
@@ -327,7 +328,7 @@ class XL {
     show() {
         if (widgetIframe !== undefined) {
             widgetIframe.style.position = 'fixed';
-            widgetIframe.style.zIndex = '1';
+            widgetIframe.style.zIndex = this.config.iframeZIndex;
             widgetIframe.style.left = '0';
             widgetIframe.style.top = '0';
             widgetIframe.style.width = '100%';
