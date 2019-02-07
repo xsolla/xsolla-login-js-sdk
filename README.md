@@ -29,7 +29,6 @@ XL.init({
   projectId: '{Login projectId}',
   callbackUrl: '{callbackUrl}',
   locale: 'en_US',
-  onlyWidgets: true,
   fields: 'email'
 });
 </script>
@@ -41,8 +40,8 @@ Parameter | Description
 `locale` | User regional settings.
 `fields` | List of parameters required to complete the registration, separated by commas.
 `theme` | URL with the widget styles file. If the value is empty, styles uploaded to Publisher Account are used.
-`popupBackgroundColor` | Color for background of fullscreen popup window. Accept any CSS legal color values. *'rgba(50, 150, 150, 0.1)'* by default
-`iframeZIndex` | Sets the stack order of fullscreen popup. *1000000* by default.
+`popupBackgroundColor` | Background color in the fullscreen mode. The value can be in any of the CSS color formats. Default is 'rgba(50, 150, 150, 0.1)'.
+`iframeZIndex` | Specifies the stack order of the widget. Default is '1000000'.
 
 ## Step 3
 
@@ -68,10 +67,10 @@ Parameter | Description
 `height` | Block height in pixels. Default is 550.
 `route` | Widget start page. Can be: `XL.ROUTES.LOGIN`(by default), `XL.ROUTES.REGISTRATION`, `XL.ROUTES.RECOVER_PASSWORD`, `XL.ROUTES.ALL_SOCIALS`.
 
-## Additionally
+## Fullscreen mode
 
-Add the button with on click event and call **XL.Show()**. Click on this button will open widget in fullscreen popup window. To close it, click on any area around widget.
+To open the widget in the fullscreen mode, add the button with an on-click event to your website and call the **XL.Show()** function. The fullscreen mode is closed by clicking outside of the widget.
 
 ``` html
-<button onclick="XL.show()">Full screen</button>
+<button onclick="XL.show()">Fullscreen widget</button>
 ```
