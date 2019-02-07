@@ -11,6 +11,13 @@ import XLApi from './xlapi';
  * @constructor
  */
 
+const ROUTES = {
+    LOGIN: '',
+    REGISTRATION: 'registration',
+    RECOVER_PASSWORD: 'reset-password',
+    ALL_SOCIALS: 'other'
+};
+
 const DEFAULT_CONFIG = {
     errorHandler: function (a) {
     },
@@ -24,12 +31,15 @@ const DEFAULT_CONFIG = {
     popupBackgroundColor: 'rgb(187, 187, 187)',
     iframeZIndex: 1000000,
     theme: 'app.default.css',
-    preloader: '<div></div>'
+    preloader: '<div></div>',
+    widgetBaseUrl: 'https://xl-widget.xsolla.com/',
+    route: ROUTES.LOGIN
 };
 
 const INVALID_LOGIN_ERROR_CODE = 1;
 const INCORRECT_LOGIN_OR_PASSWORD_ERROR_CODE = 2;
 
+const IFRAME_ID = 'XsollaLoginWidgetIframe';
 const widgetIframe = document.createElement('iframe');
 
 class XL {
@@ -41,20 +51,27 @@ class XL {
             HIDE_POPUP: 'hide popup'
         };
 
-        this.ROUTES = {
-            LOGIN: '',
-            REGISTRATION: 'registration',
-            RECOVER_PASSWORD: 'reset-password',
-            ALL_SOCIALS: 'other'
-        };
+        // need for export purposes
+        this.ROUTES = ROUTES;
 
         this.dispatcher = document.createElement('div');
+        this.onHideEvent = this.onHideEvent.bind(this);
     }
 
     init(options) {
         this.config = Object.assign({}, DEFAULT_CONFIG, options);
         this.config.popupBackgroundColor = DEFAULT_CONFIG.popupBackgroundColor;
         this.api = new XLApi(options.projectId, this.config.apiUrl);
+
+        const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+        const eventer = window[eventMethod];
+        const messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
+
+        // Listen to message from child window
+        eventer(messageEvent, (e) => {
+            let event = new CustomEvent(this.eventTypes[e.data]);
+            this.dispatcher.dispatchEvent(event);
+        }, false);
 
         Object.keys(this.eventTypes).map((eventKey) => {
             this.on(this.eventTypes[eventKey]);
@@ -206,6 +223,38 @@ class XL {
         else return this.config.callbackUrl
     };
 
+    getIframeSrc(options = {}) {
+        const widgetBaseUrl = options.widgetBaseUrl || this.config.widgetBaseUrl;
+
+        const route = options.route || this.config.route;
+
+        let src = widgetBaseUrl + route + '?projectId=' + this.getProjectId();
+
+        if (this.config.locale) {
+            src = src + '&locale=' + this.config.locale;
+        }
+        if (this.config.fields) {
+            src = src + '&fields=' + this.config.fields;
+        }
+        const redirectUrl = this.getRedirectURL();
+        if (redirectUrl) {
+            src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
+        }
+
+        const callbackUrl = this.getCallbackUrl();
+
+        if (callbackUrl) {
+            src = src + '&login_url=' + encodeURIComponent(callbackUrl);
+        }
+
+        const theme = this.getTheme();
+        if (theme) {
+            src = src + '&theme=' + encodeURIComponent(theme);
+        }
+
+        return src;
+    }
+
     AuthWidget(elementId, options) {
         if (this.api) {
             if (!elementId) {
@@ -217,34 +266,6 @@ class XL {
                 const width = `${options.width || 400}px`;
                 const height = `${options.height || 550}px`;
 
-                const widgetBaseUrl = options.widgetBaseUrl || 'https://xl-widget.xsolla.com/';
-
-                const route = options.route || this.ROUTES.LOGIN;
-
-                let src = widgetBaseUrl + route + '?projectId=' + this.getProjectId();
-
-                if (this.config.locale) {
-                    src = src + '&locale=' + this.config.locale;
-                }
-                if (this.config.fields) {
-                    src = src + '&fields=' + this.config.fields;
-                }
-                const redirectUrl = this.getRedirectURL();
-                if (redirectUrl) {
-                    src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
-                }
-
-                const callbackUrl = this.getCallbackUrl();
-
-                if (callbackUrl) {
-                    src = src + '&login_url=' + encodeURIComponent(callbackUrl);
-                }
-
-                const theme = this.getTheme();
-                if (theme) {
-                    src = src + '&theme=' + encodeURIComponent(theme);
-                }
-
                 widgetIframe.onload = () => {
                     element.removeChild(preloader);
                     widgetIframe.style.width = '100%';
@@ -255,18 +276,10 @@ class XL {
                 widgetIframe.style.width = 0;
                 widgetIframe.style.height = 0;
                 widgetIframe.frameBorder = '0';
-                widgetIframe.src = src;
-                widgetIframe.id = 'XsollaLoginWidgetIframe';
+                widgetIframe.src = this.getIframeSrc(options);
+                widgetIframe.id = IFRAME_ID;
 
-                const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
-                const eventer = window[eventMethod];
-                const messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
 
-                // Listen to message from child window
-                eventer(messageEvent, (e) => {
-                    let event = new CustomEvent(this.eventTypes[e.data]);
-                    this.dispatcher.dispatchEvent(event);
-                }, false);
 
                 const preloader = document.createElement('div');
 
@@ -292,12 +305,18 @@ class XL {
         widgetIframe.parentNode.removeChild(widgetIframe);
     }
 
-    onHideEvent() {
+    _hide() {
         widgetIframe.style.position = '';
         widgetIframe.style.zIndex = '';
         widgetIframe.style.left = '';
         widgetIframe.style.top = '';
+        widgetIframe.style.width = 0;
+        widgetIframe.style.height = 0;
         widgetIframe.style.backgroundColor = '';
+    }
+
+    onHideEvent() {
+       this._hide();
     }
 
     /**
@@ -321,19 +340,37 @@ class XL {
         this.dispatcher.addEventListener(event, handler);
     };
 
+    _show() {
+        widgetIframe.style.position = 'fixed';
+        widgetIframe.style.zIndex = this.config.iframeZIndex;
+        widgetIframe.style.left = '0';
+        widgetIframe.style.top = '0';
+        widgetIframe.style.width = '100%';
+        widgetIframe.style.height = '100%';
+        widgetIframe.style.backgroundColor = this.config.popupBackgroundColor;
+    }
+
     /**
      * open fullsreen popup for widget
      */
 
     show() {
-        if (widgetIframe !== undefined) {
-            widgetIframe.style.position = 'fixed';
-            widgetIframe.style.zIndex = this.config.iframeZIndex;
-            widgetIframe.style.left = '0';
-            widgetIframe.style.top = '0';
-            widgetIframe.style.width = '100%';
-            widgetIframe.style.height = '100%';
-            widgetIframe.style.backgroundColor = this.config.popupBackgroundColor;
+        if (!document.getElementById(IFRAME_ID)) {
+            widgetIframe.src = this.getIframeSrc();
+            widgetIframe.id = IFRAME_ID;
+            widgetIframe.style.width = 0;
+            widgetIframe.style.height = 0;
+            widgetIframe.frameBorder = '0';
+
+            widgetIframe.onload = () => {
+                let event = new CustomEvent('load');
+                this.dispatcher.dispatchEvent(event);
+            };
+            this._show();
+
+            document.body.appendChild(widgetIframe);
+        } else {
+            this._show();
         }
     };
 }
