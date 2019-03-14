@@ -28,8 +28,7 @@ Add the widget initialization code to the `<body>` tag.
 XL.init({
   projectId: '{Login projectId}',
   callbackUrl: '{callbackUrl}',
-  locale: 'en_US',
-  fields: 'email'
+  locale: 'en_US'
 });
 </script>
 ```
@@ -40,15 +39,36 @@ XL.init({
  `locale`               | User regional settings.                                                                                                                                                                    
  `fields`               | List of parameters required to complete the registration, separated by commas.                                                                                                             
  `theme`                | URL with the widget styles file. If the value is empty, styles uploaded to Publisher Account are used.                                                                                     
- `popupBackgroundColor` | Background color in the fullscreen mode. The value can be in any of the CSS color formats. Default is 'rgba(50, 150, 150, 0.1)'.                                                           
- `iframeZIndex`         | Specifies the stack order of the widget. Default is '1000000'.                                                                                                                             
+ `popupBackgroundColor` | Widget background color in the **fullscreen** mode. The value can be in any of the CSS color formats. Default is rgba(50, 150, 150, 0.1).                                                           
+ `iframeZIndex`         | The stack order of the widget in the **fullscreen** mode. Default is 1000000.                                                                                                                             
 
 ## Step 3
 
-Add the block to contain the widget to the `<body>` tag. Specify the block’s ID in the **element_id** parameter.
+Select the way of placing the widget on the website:
+* fullscreen mode
+* particular block of the page.
+
+**FULLSCREEN MODE**
+
+Add the button with an on-click event to your website and call the `XL.show()` function.
+
+``` html
+<button onclick="XL.show()">Fullscreen widget</button>
+```
+
+The fullscreen mode will be closed upon clicking outside the widget.
+
+**BLOCK OF THE PAGE**
+
+Add the block, in which the widget will be placed, to the `<body>` tag of this page and specify the block ID.
 
 ``` html
 <div id="xl_auth"></div>
+```
+
+Add the following script and specify the parameters as described below.
+
+``` js
 <script type="text/javascript">
 var element_id = 'xl_auth';
 var options = {
@@ -66,11 +86,3 @@ XL.AuthWidget(element_id, options);
  `width`      | Block width in pixels. Default is 400.                                                                                                     
  `height`     | Block height in pixels. Default is 550.                                                                                                    
  `route`      | Widget start page. Can be: `XL.ROUTES.LOGIN`(by default), `XL.ROUTES.REGISTRATION`, `XL.ROUTES.RECOVER_PASSWORD`, `XL.ROUTES.ALL_SOCIALS`.
-
-## Fullscreen mode
-
-To open the widget in the fullscreen mode, add the button with an on-click event to your website and call the **XL.Show()** function. The fullscreen mode is closed by clicking outside of the widget.
-
-``` html
-<button onclick="XL.show()">Fullscreen widget</button>
-```
