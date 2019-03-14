@@ -26,7 +26,7 @@ Add the widget initialization code to the `<body>` tag.
 ```html
 <script type="text/javascript">
 XL.init({
-  projectId: '{Login projectId}',
+  projectId: '{Login ID}',
   callbackUrl: '{callbackUrl}',
   locale: 'en_US'
 });
