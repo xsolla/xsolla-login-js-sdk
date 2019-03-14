@@ -23,7 +23,7 @@ bower install xsolla-login-js-sdk
 ## Step 2
 
 Add the widget initialization code to the `<body>` tag.
-```html
+```js
 <script type="text/javascript">
 XL.init({
   projectId: '{Login ID}',
