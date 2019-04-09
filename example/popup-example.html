@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Popup Example</title>
+    <script type="application/javascript" src="./../dist/xl.js"></script>
+</head>
+<body>
+    <button id="myBtn" class="myBtn" onclick="XL.show()">Full screen</button>
+</body>
+</html>
+<script>
+    window.onload = function () {
+        XL.init({
+            projectId: 'baa3b8aa-2872-11e9-9244-42010aa80004',
+            callbackUrl: 'https://login.xsolla.com/api/blank',
+            popupBackgroundColor: 'rgba(50, 150, 150, 0.1)',
+            iframeZIndex: 0
+        });
+
+        XL.on(XL.eventTypes.HIDE_POPUP, function () {
+            console.log('hide_popup');
+        });
+
+        XL.on(XL.eventTypes.LOAD, function () {
+            console.log('loaded');
+        });
+
+        XL.on(XL.eventTypes.CLOSE, function () {
+            console.log('closed');
+        });
+    };
+</script>
+<style>
+    .myBtn{
+        width: 100px;
+        height: 50px;
+        border-radius: 5px;
+        background-color: #49c776;
+        font-size: 14pt;
+        border-color: black;
+    }
+</style>
