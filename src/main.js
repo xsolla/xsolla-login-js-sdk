@@ -33,7 +33,8 @@ const DEFAULT_CONFIG = {
     theme: 'app.default.css',
     preloader: '<div></div>',
     widgetBaseUrl: 'https://xl-widget.xsolla.com/',
-    route: ROUTES.LOGIN
+    route: ROUTES.LOGIN,
+    inFullscreenMode: false
 };
 
 const INVALID_LOGIN_ERROR_CODE = 1;
@@ -316,7 +317,9 @@ class XL {
     }
 
     onHideEvent() {
-       this._hide();
+        if (this.config.inFullscreenMode) {
+            this._hide();
+        }
     }
 
     /**
@@ -348,6 +351,7 @@ class XL {
         widgetIframe.style.width = '100%';
         widgetIframe.style.height = '100%';
         widgetIframe.style.backgroundColor = this.config.popupBackgroundColor;
+        this.config.inFullscreenMode = true;
     }
 
     /**
