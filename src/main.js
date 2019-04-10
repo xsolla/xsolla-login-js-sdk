@@ -25,7 +25,7 @@ const DEFAULT_CONFIG = {
         return true;
     },
     isMarkupSocialsHandlersEnabled: false,
-    apiUrl: '//login.xsolla.com/api/',
+    apiUrl: 'https://login.xsolla.com/api/',
     maxXLClickDepth: 20,
     onlyWidgets: false,
     popupBackgroundColor: 'rgb(187, 187, 187)',
