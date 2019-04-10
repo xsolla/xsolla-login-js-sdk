@@ -97,50 +97,6 @@ class XL {
             if (this.config.callbackUrl) {
                 params.login_url = this.config.callbackUrl;
             }
-
-            const updateSocialLinks = () => {
-                this.api.getSocialsURLs((response) => {
-                    this.socialUrls = {};
-                    for (let key in response) {
-                        if (response.hasOwnProperty(key)) {
-                            this.socialUrls['sn-' + key] = response[key];
-                        }
-                    }
-                }, (e) => {
-                    console.error(e);
-                }, params);
-            };
-
-            updateSocialLinks();
-            setInterval(updateSocialLinks, 1000 * 60 * 59);
-
-            const maxClickDepth = this.config.maxXLClickDepth;
-            // Find closest ancestor with data-xl-auth attribute
-            function findAncestor(el) {
-                if (el.attributes['data-xl-auth']) {
-                    return el;
-                }
-                let i = 0;
-                while ((el = el.parentElement) && !el.attributes['data-xl-auth'] && ++i < maxClickDepth);
-                return el;
-            }
-
-            if (this.config.isMarkupSocialsHandlersEnabled) {
-                document.addEventListener('click', (e) => {
-                    const target = findAncestor(e.target);
-                    // Do nothing if click was outside of elements with data-xl-auth
-                    if (!target) {
-                        return;
-                    }
-                    const xlData = target.attributes['data-xl-auth'];
-                    if (xlData) {
-                        let nodeValue = xlData.nodeValue;
-                        if (nodeValue) {
-                            this.login({authType: nodeValue});
-                        }
-                    }
-                });
-            }
         }
     }
 
