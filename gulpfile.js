@@ -60,7 +60,7 @@ gulp.task('build', function () {
 
 gulp.task('browser-sync', function () {
     browserSync({
-        startPath: '/index.html',
+        startPath: '/widget.html',
         server: {
             baseDir: ['example', 'dist']
         },

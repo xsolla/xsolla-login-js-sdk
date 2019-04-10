@@ -25,7 +25,7 @@ const DEFAULT_CONFIG = {
         return true;
     },
     isMarkupSocialsHandlersEnabled: false,
-    apiUrl: '//login.xsolla.com/api/',
+    apiUrl: 'https://login.xsolla.com/api/',
     maxXLClickDepth: 20,
     onlyWidgets: false,
     popupBackgroundColor: 'rgb(187, 187, 187)',
@@ -33,7 +33,8 @@ const DEFAULT_CONFIG = {
     theme: 'app.default.css',
     preloader: '<div></div>',
     widgetBaseUrl: 'https://xl-widget.xsolla.com/',
-    route: ROUTES.LOGIN
+    route: ROUTES.LOGIN,
+    inFullscreenMode: false
 };
 
 const INVALID_LOGIN_ERROR_CODE = 1;
@@ -95,50 +96,6 @@ class XL {
             }
             if (this.config.callbackUrl) {
                 params.login_url = this.config.callbackUrl;
-            }
-
-            const updateSocialLinks = () => {
-                this.api.getSocialsURLs((response) => {
-                    this.socialUrls = {};
-                    for (let key in response) {
-                        if (response.hasOwnProperty(key)) {
-                            this.socialUrls['sn-' + key] = response[key];
-                        }
-                    }
-                }, (e) => {
-                    console.error(e);
-                }, params);
-            };
-
-            updateSocialLinks();
-            setInterval(updateSocialLinks, 1000 * 60 * 59);
-
-            const maxClickDepth = this.config.maxXLClickDepth;
-            // Find closest ancestor with data-xl-auth attribute
-            function findAncestor(el) {
-                if (el.attributes['data-xl-auth']) {
-                    return el;
-                }
-                let i = 0;
-                while ((el = el.parentElement) && !el.attributes['data-xl-auth'] && ++i < maxClickDepth);
-                return el;
-            }
-
-            if (this.config.isMarkupSocialsHandlersEnabled) {
-                document.addEventListener('click', (e) => {
-                    const target = findAncestor(e.target);
-                    // Do nothing if click was outside of elements with data-xl-auth
-                    if (!target) {
-                        return;
-                    }
-                    const xlData = target.attributes['data-xl-auth'];
-                    if (xlData) {
-                        let nodeValue = xlData.nodeValue;
-                        if (nodeValue) {
-                            this.login({authType: nodeValue});
-                        }
-                    }
-                });
             }
         }
     }
@@ -316,7 +273,9 @@ class XL {
     }
 
     onHideEvent() {
-       this._hide();
+        if (this.config.inFullscreenMode) {
+            this._hide();
+        }
     }
 
     /**
@@ -348,6 +307,7 @@ class XL {
         widgetIframe.style.width = '100%';
         widgetIframe.style.height = '100%';
         widgetIframe.style.backgroundColor = this.config.popupBackgroundColor;
+        this.config.inFullscreenMode = true;
     }
 
     /**

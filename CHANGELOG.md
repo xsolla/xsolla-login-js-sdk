@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1 - 2019-04-10
+
+- [fix] Fix fullscreen popup
+
 ## 1.3.2 - 2018-10-22
 
 - [build] Updated dependencies
