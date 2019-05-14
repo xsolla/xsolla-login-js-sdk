@@ -35,7 +35,11 @@
         });
 
         XL.on(XL.eventTypes.CLOSE, function () {
-            console.log('closed');
+            console.log('can close now');
+        });
+
+        XL.on(XL.eventTypes.REGISTRATION_REQUEST, function () {
+            console.log('registration request has been send');
         });
     }
 </script>

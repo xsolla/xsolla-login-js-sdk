@@ -49,7 +49,8 @@ class XL {
         this.eventTypes = {
             LOAD: 'load',
             CLOSE: 'close',
-            HIDE_POPUP: 'hide popup'
+            HIDE_POPUP: 'hide popup',
+            REGISTRATION_REQUEST: 'registration request'
         };
 
         // need for export purposes
@@ -66,11 +67,11 @@ class XL {
 
         const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
         const eventer = window[eventMethod];
-        const messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
+        const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
         // Listen to message from child window
         eventer(messageEvent, (e) => {
-            let event = new CustomEvent(this.eventTypes[e.data]);
+            let event = new CustomEvent(this.eventTypes[e.data.type]);
             this.dispatcher.dispatchEvent(event);
         }, false);
 
