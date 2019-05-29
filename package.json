@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "build": "gulp build",
+    "host": "static-server . -p 8084",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch"
   },
@@ -32,6 +33,7 @@
     "karma-browserify": "^5.3.0",
     "karma-coverage": "^1.1.2",
     "karma-jasmine": "^1.0.2",
+    "static-server": "2.2.1",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "watchify": "^3.11.0"
