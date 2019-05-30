@@ -28,7 +28,7 @@ const DEFAULT_CONFIG = {
     apiUrl: 'https://login.xsolla.com/api/',
     maxXLClickDepth: 20,
     onlyWidgets: false,
-    loginUrl: 'https://xl-widget.xsolla.com/auth.html',
+    defaultLoginUrl: 'https://xl-widget.xsolla.com/auth.html',
     popupBackgroundColor: 'rgb(187, 187, 187)',
     iframeZIndex: 1000000,
     theme: 'app.default.css',
@@ -181,10 +181,10 @@ class XL {
     getCallbackUrl() {
         if (this.config.callbackUrl) {
             return this.config.callbackUrl;
-        } else if (this.config.externalWindow) {
-            return DEFAULT_CONFIG.loginUrl;
-        } else {
+        } else if (this.config.loginUrl) {
             return this.config.loginUrl;
+        } else if (this.config.externalWindow) {
+            return DEFAULT_CONFIG.defaultLoginUrl;
         }
     };
 
