@@ -179,12 +179,12 @@ class XL {
     }
 
     getCallbackUrl() {
-        if (this.config.loginUrl) {
-            return this.config.loginUrl;
-        } else if (!this.config.externalWindow) {
+        if (this.config.callbackUrl) {
             return this.config.callbackUrl;
-        } else {
+        } else if (this.config.externalWindow) {
             return DEFAULT_CONFIG.loginUrl;
+        } else {
+            return this.config.loginUrl;
         }
     };
 
