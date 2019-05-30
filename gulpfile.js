@@ -60,9 +60,9 @@ gulp.task('build', function () {
 
 gulp.task('browser-sync', function () {
     browserSync({
-        startPath: '/widget.html',
+        startPath: 'example/widget.html',
         server: {
-            baseDir: ['example', 'dist']
+            baseDir: './'
         },
         port: 9000,
         ghostMode: false
