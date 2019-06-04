@@ -8,16 +8,18 @@
 <style>
     body {
         font-family: -apple-system, BlinkMacSystemFont, Roboto, Open Sans, Helvetica Neue, sans-serif;
-        background-color: #fff;
+        background-color: #f6faff;
     }
 
-    .social-link {
-        cursor: pointer;
+    #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>
 <body>
-<div>
-    <div>Xsolla login widget</div>
+<div id="container">
+    <h1>Xsolla login widget</h1>
     <div id="xl_widget"></div>
 </div>
 <script type="application/javascript">
@@ -27,7 +29,8 @@
             redirectUrl: 'https://publisher.xsolla.com'
         });
         XL.AuthWidget('xl_widget', {
-            widgetBaseUrl: 'https://xl-widget.xsolla.com/'
+            widgetBaseUrl: 'https://xl-widget.xsolla.com/',
+            width: 500
         });
 
         XL.on(XL.eventTypes.LOAD, function () {
@@ -40,6 +43,10 @@
 
         XL.on(XL.eventTypes.REGISTRATION_REQUEST, function () {
             console.log('registration request has been sent');
+        });
+
+        XL.on(XL.eventTypes.AUTHENTICATED, function(data) {
+            console.log('cb data', data.urlParams);
         });
     }
 </script>

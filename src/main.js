@@ -28,6 +28,7 @@ const DEFAULT_CONFIG = {
     apiUrl: 'https://login.xsolla.com/api/',
     maxXLClickDepth: 20,
     onlyWidgets: false,
+    defaultLoginUrl: 'https://xl-widget.xsolla.com/auth.html',
     popupBackgroundColor: 'rgb(187, 187, 187)',
     iframeZIndex: 1000000,
     theme: 'app.default.css',
@@ -50,7 +51,8 @@ class XL {
             LOAD: 'load',
             CLOSE: 'close',
             HIDE_POPUP: 'hide popup',
-            REGISTRATION_REQUEST: 'registration request'
+            REGISTRATION_REQUEST: 'registration request',
+            AUTHENTICATED: 'authenticated'
         };
 
         // need for export purposes
@@ -71,7 +73,7 @@ class XL {
 
         // Listen to message from child window
         eventer(messageEvent, (e) => {
-            let event = new CustomEvent(this.eventTypes[e.data.type]);
+            const event = new CustomEvent(this.eventTypes[e.data.type], {detail: e.data});
             this.dispatcher.dispatchEvent(event);
         }, false);
 
@@ -177,8 +179,13 @@ class XL {
     }
 
     getCallbackUrl() {
-        if (this.config.loginUrl) return this.config.loginUrl;
-        else return this.config.callbackUrl
+        if (this.config.callbackUrl) {
+            return this.config.callbackUrl;
+        } else if (this.config.loginUrl) {
+            return this.config.loginUrl;
+        } else if (this.config.externalWindow) {
+            return DEFAULT_CONFIG.defaultLoginUrl;
+        }
     };
 
     getIframeSrc(options = {}) {
@@ -210,6 +217,11 @@ class XL {
             src = src + '&theme=' + encodeURIComponent(theme);
         }
 
+        const {externalWindow} = this.config;
+        if (externalWindow) {
+            src = src + '&external_window=' + encodeURIComponent(externalWindow);
+        }
+
         return src;
     }
 
@@ -236,8 +248,6 @@ class XL {
                 widgetIframe.frameBorder = '0';
                 widgetIframe.src = this.getIframeSrc(options);
                 widgetIframe.id = IFRAME_ID;
-
-
 
                 const preloader = document.createElement('div');
 
@@ -286,7 +296,7 @@ class XL {
      */
 
     on(event, handler) {
-        handler = handler || null;
+        handler = handler || function() {};
 
         if (event === this.eventTypes.CLOSE) {
             if (!handler) {
@@ -297,7 +307,7 @@ class XL {
             }
         }
 
-        this.dispatcher.addEventListener(event, handler);
+        this.dispatcher.addEventListener(event, (e) => handler(e.detail));
     };
 
     _show() {
