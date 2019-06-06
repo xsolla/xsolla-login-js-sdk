@@ -13,6 +13,8 @@ var browserSync = require('browser-sync');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var gulpif = require('gulp-if');
+var commonShake = require('common-shakeify');
+var strip = require('gulp-strip-comments');
 
 var Server = require('karma').Server;
 
@@ -26,7 +28,7 @@ function setupBrowserify(watch) {
         debug: true,
         transform: [["babelify", { "presets": ["es2015"], "plugins": ["transform-object-assign"] }]]
     };
-    var bundler = browserify('./src/main.js', bundleOptions);
+    var bundler = browserify('./src/main.js', bundleOptions).plugin(commonShake);
     bundler.require('./src/main.js', {entry: true, expose: 'main'});
 
     if (watch) {
@@ -44,6 +46,10 @@ function runBundle(bundler, watch) {
     // log errors if they happen
         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source('xl.js'))
+        .pipe(buffer())
+        .pipe(strip({
+            ignore: /\/\/#/g
+        }))
         .pipe(gulp.dest('./dist'))
         .pipe(buffer())
         .pipe(rename('xl.min.js'))

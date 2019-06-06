@@ -2,6 +2,7 @@
  * Created by a.korotaev on 24.06.16.
  */
 require('./supports');
+const version = require('../package.json').version;
 
 import XLApi from './xlapi';
 /**
@@ -73,7 +74,14 @@ class XL {
 
         // Listen to message from child window
         eventer(messageEvent, (e) => {
-            const event = new CustomEvent(this.eventTypes[e.data.type], {detail: e.data});
+            let event;
+            if (typeof e.data === 'string') {
+                // Old format - string only
+                event = new CustomEvent(this.eventTypes[e.data]);
+            } else {
+                // New format - {type: 'event', ...}
+                event = new CustomEvent(this.eventTypes[e.data.type], {detail: e.data});
+            }
             this.dispatcher.dispatchEvent(event);
         }, false);
 
@@ -193,7 +201,7 @@ class XL {
 
         const route = options.route || this.config.route;
 
-        let src = widgetBaseUrl + route + '?projectId=' + this.getProjectId();
+        let src = widgetBaseUrl + route + '?widget_sdk_version=' + version + '&projectId=' + this.getProjectId();
 
         if (this.config.locale) {
             src = src + '&locale=' + this.config.locale;
