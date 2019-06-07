@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0 - 2019-06-07
+
+- [feat] Added widgetVersion parameter
+- [feat] Added externalWindow parameter
+- [feat] Added registration event
+
 ## 1.4.1 - 2019-04-10
 
 - [fix] Fix fullscreen popup

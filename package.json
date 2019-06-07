@@ -1,6 +1,6 @@
 {
   "name": "xsolla-login-js-sdk",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "description": "",
   "main": "src/main.js",
   "scripts": {
