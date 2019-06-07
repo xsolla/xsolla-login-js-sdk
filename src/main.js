@@ -209,6 +209,11 @@ class XL {
             src = src + '&theme=' + encodeURIComponent(theme);
         }
 
+        const widgetVersion = this.config.widgetVersion;
+        if (widgetVersion) {
+            src += '&version=' + encodeURIComponent(widgetVersion);
+        }
+
         return src;
     }
 
