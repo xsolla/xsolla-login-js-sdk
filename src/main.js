@@ -230,6 +230,11 @@ class XL {
             src = src + '&external_window=' + encodeURIComponent(externalWindow);
         }
 
+        const widgetVersion = this.config.widgetVersion;
+        if (widgetVersion) {
+            src += '&version=' + encodeURIComponent(widgetVersion);
+        }
+
         return src;
     }
 
