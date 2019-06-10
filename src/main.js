@@ -16,7 +16,9 @@ const ROUTES = {
     LOGIN: '',
     REGISTRATION: 'registration',
     RECOVER_PASSWORD: 'reset-password',
-    ALL_SOCIALS: 'other'
+    ALL_SOCIALS: 'other',
+    SOCIALS_LOGIN: 'socials',
+    USERNAME_LOGIN: 'username-login',
 };
 
 const DEFAULT_CONFIG = {
@@ -36,6 +38,7 @@ const DEFAULT_CONFIG = {
     preloader: '<div></div>',
     widgetBaseUrl: 'https://xl-widget.xsolla.com/',
     route: ROUTES.LOGIN,
+    compact: false,
     inFullscreenMode: false
 };
 
@@ -237,6 +240,11 @@ class XL {
         const widgetVersion = this.config.widgetVersion;
         if (widgetVersion) {
             src += '&version=' + encodeURIComponent(widgetVersion);
+        }
+
+        const compact = this.config.compact;
+        if (compact) {
+            src += '&compact=' + encodeURIComponent(compact);
         }
 
         return src;
