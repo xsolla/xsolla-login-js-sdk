@@ -197,7 +197,11 @@ class XL {
     };
 
     getIframeSrc(options = {}) {
-        const widgetBaseUrl = options.widgetBaseUrl || this.config.widgetBaseUrl;
+        let widgetBaseUrl = options.widgetBaseUrl || this.config.widgetBaseUrl;
+
+        if (widgetBaseUrl.substr(-1) !== '/') {
+            widgetBaseUrl += '/';
+        }
 
         const route = options.route || this.config.route;
 
