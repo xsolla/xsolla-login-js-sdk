@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0 - 2019-06-11
+
+- [feat] Added compact parameter
+- [feat] Added routes for only social and only username/pass login
+
 ## 2.0.0 - 2019-06-07
 
 - [feat] Added widgetVersion parameter
