@@ -16,8 +16,6 @@ var gulpif = require('gulp-if');
 var commonShake = require('common-shakeify');
 var strip = require('gulp-strip-comments');
 
-var Server = require('karma').Server;
-
 function setupBrowserify(watch) {
     var bundleOptions = {
         cache: {},
@@ -60,8 +58,9 @@ function runBundle(bundler, watch) {
         .pipe(gulpif(watch, browserSync.reload({stream: true, once: true})));
 }
 
-gulp.task('build', function () {
+gulp.task('build', function (done) {
     setupBrowserify(false);
+    done();
 });
 
 gulp.task('browser-sync', function () {
@@ -75,18 +74,8 @@ gulp.task('browser-sync', function () {
     });
 });
 
-gulp.task('serve', ['browser-sync'], function () {
+gulp.task('serve', gulp.series(['browser-sync'], function () {
     setupBrowserify(true);
 
     gulp.watch(['example/*.html']).on('change', browserSync.reload); //all the other files are managed by watchify
-});
-
-/**
- * Run test once and exit
- */
-gulp.task('test', function (done) {
-    new Server({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: true
-    }, done).start();
-});
+}));
