@@ -1,4 +1,5 @@
 const main = require('../src/main');
+const ParseUrl = require('url-parse');
 
 const TEST_CONFIG = {
     projectId: '40db2ea4-5d42-11e6-a3ff-005056a0e04a',
@@ -6,16 +7,16 @@ const TEST_CONFIG = {
     callbackUrl: 'https://test.xsolla.com',
     loginUrl: 'https://test.xsolla.com',
     popupBackgroundColor: 'rgba(102, 255, 51, 1)',
-    iframeZIndex: 0,
+    iframeZIndex: '0',
     theme: 'testTheme.css',
     locale: 'en_US',
     fields: 'username,email',
-    externalWindow: true,
+    externalWindow: 'true',
     route: 'XL.ROUTES.ALL_SOCIALS',
     widgetVersion: '4.0.1',
     widgetBaseUrl: 'https://base-widget-test.com/',
-    compact: true,
-    onlyWidgets: true
+    compact: 'true',
+    onlyWidgets: 'true'
 };
 
 beforeAll(() => {
@@ -35,145 +36,86 @@ beforeAll(() => {
     });
 });
 
-describe('Config params', function () {
-    test('get projectId', () => {
-        expect(main.getProjectId()).toBe(TEST_CONFIG.projectId);
-    });
-
-    test('get redirectUrl', () => {
-        expect(main.getRedirectURL()).toBe(TEST_CONFIG.redirectUrl);
-    });
-
-    test('get callbackUrl', () => {
-        expect(main.getCallbackUrl()).toBe(TEST_CONFIG.callbackUrl);
-    });
-
-    test('get popupBackgroundColor', () => {
+describe('Widget config params', function () {
+    it('contains popupBackgroundColor param', () => {
         expect(main.config.popupBackgroundColor).toBe(TEST_CONFIG.popupBackgroundColor);
     });
 
-    test('get iframeZIndex', () => {
+    it('contains iframeZIndex param', () => {
         expect(main.config.iframeZIndex).toBe(TEST_CONFIG.iframeZIndex);
-    });
-
-    test('get theme', () => {
-        expect(main.config.theme).toBe(TEST_CONFIG.theme);
-    });
-
-    test('get locale', () => {
-        expect(main.config.locale).toBe(TEST_CONFIG.locale);
-    });
-
-    test('get fields', () => {
-        expect(main.config.fields).toBe(TEST_CONFIG.fields);
     });
 });
 
-describe('Generating url', function () {
-    test('default', () => {
-        const defaultUrl = main.getIframeSrc();
-        const sdkStartIndex = defaultUrl.indexOf('widget_sdk_version=');
-        const sdkEndIndex = defaultUrl.indexOf('&', sdkStartIndex);
-        const newUrl = defaultUrl.substring(0, sdkStartIndex) + defaultUrl.substring(sdkEndIndex + 1);
-        expect(newUrl)
-            .toBe('https://xl-widget.xsolla.com/?projectId=40db2ea4-5d42-11e6-a3ff-005056a0e04a&locale=en_US&fields=username,email&redirectUrl=https%3A%2F%2Fpublisher.xsolla.com&login_url=https%3A%2F%2Ftest.xsolla.com&theme=testTheme.css&external_window=true&version=4.0.1&compact=true');
+describe('Get iframe source', function () {
+    it('returns default value', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
+
+        expect(defaultUrl.origin).toBe('https://xl-widget.xsolla.com');
     });
 
-    test('change widgetBaseUrl', () => {
-        const widgetUrl = main.getIframeSrc({ widgetBaseUrl: TEST_CONFIG.widgetBaseUrl });
-        const baseUrlEndIndex = widgetUrl.indexOf('?');
-        const widgetBaseUrl = widgetUrl.substring(0, baseUrlEndIndex);
+    it('changes widgetBaseUrl param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc({ widgetBaseUrl: TEST_CONFIG.widgetBaseUrl }), true);
 
-        expect(widgetBaseUrl).toBe(TEST_CONFIG.widgetBaseUrl);
+        expect(defaultUrl.origin + '/').toBe(TEST_CONFIG.widgetBaseUrl);
     });
 
-    test('change route', () => {
-        const widgetUrl = main.getIframeSrc({ route: TEST_CONFIG.route });
-        const routeEndIndex = widgetUrl.indexOf('?');
-        const routeStartIndex = widgetUrl.indexOf('/', 8);
-        const route = widgetUrl.substring(routeStartIndex + 1, routeEndIndex);
+    it('changes route param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc({ route: TEST_CONFIG.route }), true);
 
-        expect(route).toBe(TEST_CONFIG.route);
+        expect(defaultUrl.pathname.substring(1)).toBe(TEST_CONFIG.route);
     });
 
-    test('check projectId', () => {
-        const defaultUrl = main.getIframeSrc();
-        const projectIdStartIndex = defaultUrl.indexOf('&projectId=');
-        const projectIdEndIndex = defaultUrl.indexOf('&', projectIdStartIndex + 1);
-        const projectId = defaultUrl.substring(projectIdStartIndex + 11, projectIdEndIndex);
+    it('contains projectId param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(projectId).toBe(TEST_CONFIG.projectId);
+        expect(decodeURIComponent(defaultUrl.query.projectId)).toBe(TEST_CONFIG.projectId);
     });
 
-    test('check locale', () => {
-        const defaultUrl = main.getIframeSrc();
-        const localeStartIndex = defaultUrl.indexOf('&locale=');
-        const localeEndIndex = defaultUrl.indexOf('&', localeStartIndex + 1);
-        const locale = defaultUrl.substring(localeStartIndex + 8, localeEndIndex);
+    it('contains locale param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(locale).toBe(TEST_CONFIG.locale);
+        expect(decodeURIComponent(defaultUrl.query.locale)).toBe(TEST_CONFIG.locale);
     });
 
-    test('check fields', () => {
-        const defaultUrl = main.getIframeSrc();
-        const fieldsStartIndex = defaultUrl.indexOf('&fields=');
-        const fieldsEndIndex = defaultUrl.indexOf('&', fieldsStartIndex + 1);
-        const fields = defaultUrl.substring(fieldsStartIndex + 8, fieldsEndIndex);
+    it('contains fields param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(fields).toBe(TEST_CONFIG.fields);
+        expect(decodeURIComponent(defaultUrl.query.fields)).toBe(TEST_CONFIG.fields);
     });
 
-    test('check redirectUrl', () => {
-        const defaultUrl = main.getIframeSrc();
-        const redirectUrlStartIndex = defaultUrl.indexOf('&redirectUrl=');
-        const redirectUrlEndIndex = defaultUrl.indexOf('&', redirectUrlStartIndex + 1);
-        const redirectUrl = defaultUrl.substring(redirectUrlStartIndex + 13, redirectUrlEndIndex);
+    it('contains redirectUrl param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(redirectUrl).toBe(encodeURIComponent(TEST_CONFIG.redirectUrl));
+        expect(decodeURIComponent(defaultUrl.query.redirectUrl)).toBe(TEST_CONFIG.redirectUrl);
     });
 
-    test('check loginUrl', () => {
-        const defaultUrl = main.getIframeSrc();
-        const loginUrlStartIndex = defaultUrl.indexOf('&login_url=');
-        const loginUrlEndIndex = defaultUrl.indexOf('&', loginUrlStartIndex + 1);
-        const loginUrl = defaultUrl.substring(loginUrlStartIndex + 11, loginUrlEndIndex);
+    it('contains loginUrl param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(loginUrl).toBe(encodeURIComponent(TEST_CONFIG.loginUrl));
+        expect(decodeURIComponent(defaultUrl.query.login_url)).toBe(TEST_CONFIG.loginUrl);
     });
 
-    test('check theme', () => {
-        const defaultUrl = main.getIframeSrc();
-        const themeStartIndex = defaultUrl.indexOf('&theme=');
-        const themeEndIndex = defaultUrl.indexOf('&', themeStartIndex + 1);
-        const theme = defaultUrl.substring(themeStartIndex + 7, themeEndIndex);
+    it('contains theme param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(theme).toBe(encodeURIComponent(TEST_CONFIG.theme));
+        expect(decodeURIComponent(defaultUrl.query.theme)).toBe(TEST_CONFIG.theme);
     });
 
-    test('check externalWindow', () => {
-        const defaultUrl = main.getIframeSrc();
-        const externalWindowStartIndex = defaultUrl.indexOf('&external_window=');
-        const externalWindowEndIndex = defaultUrl.indexOf('&', externalWindowStartIndex + 1);
-        const externalWindow = defaultUrl.substring(externalWindowStartIndex + 17, externalWindowEndIndex);
+    it('contains externalWindow param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(externalWindow).toBe(encodeURIComponent(TEST_CONFIG.externalWindow));
+        expect(decodeURIComponent(defaultUrl.query.external_window)).toBe(TEST_CONFIG.externalWindow);
     });
 
-    test('check widgetVersion', () => {
-        const defaultUrl = main.getIframeSrc();
-        console.dir(defaultUrl);
-        const widgetVersionStartIndex = defaultUrl.indexOf('&version=');
-        const widgetVersionEndIndex = defaultUrl.indexOf('&', widgetVersionStartIndex + 1);
-        const widgetVersion = defaultUrl.substring(widgetVersionStartIndex + 9, widgetVersionEndIndex);
+    it('contains widgetVersion param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(widgetVersion).toBe(encodeURIComponent(TEST_CONFIG.widgetVersion));
+        expect(decodeURIComponent(defaultUrl.query.version)).toBe(TEST_CONFIG.widgetVersion);
     });
 
-    test('check compact', () => {
-        const defaultUrl = main.getIframeSrc();
-        const compactStartIndex = defaultUrl.indexOf('&compact=');
-        const compact = defaultUrl.substring(compactStartIndex + 9);
+    it('contains compact param', () => {
+        const defaultUrl = ParseUrl(main.getIframeSrc(), true);
 
-        expect(compact).toBe(encodeURIComponent(TEST_CONFIG.compact));
+        expect(decodeURIComponent(defaultUrl.query.compact)).toBe(TEST_CONFIG.compact);
     });
 });
