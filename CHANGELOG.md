@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 - 2019-06-18
+
+- [fix] Updated dependencies
+
 ## 2.1.0 - 2019-06-11
 
 - [feat] Added compact parameter
