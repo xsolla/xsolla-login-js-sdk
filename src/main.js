@@ -34,7 +34,6 @@ const DEFAULT_CONFIG = {
     defaultLoginUrl: 'https://xl-widget.xsolla.com/auth.html',
     popupBackgroundColor: 'rgb(187, 187, 187)',
     iframeZIndex: 1000000,
-    theme: 'app.default.css',
     preloader: '<div></div>',
     widgetBaseUrl: 'https://xl-widget.xsolla.com/',
     route: ROUTES.LOGIN,
