@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2 - 2019-07-04
+
+- [fix] Last custom theme is used instead of the default now.
+
 ## 2.1.1 - 2019-06-18
 
 - [fix] Updated dependencies
