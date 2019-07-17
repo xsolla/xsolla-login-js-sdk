@@ -1,6 +1,8 @@
 /**
  * Created by a.korotaev on 24.06.16.
  */
+const toSnakeCase = require('to-snake-case');
+
 require('./supports');
 const version = require('../package.json').version;
 
@@ -21,15 +23,27 @@ const ROUTES = {
     USERNAME_LOGIN: 'username-login',
 };
 
+const IGNORELIST = [
+    'onlyWidgets',
+    'apiUrl',
+    'defaultLoginUrl',
+    'popupBackgroundColor',
+    'iframeZIndex',
+    'preloader',
+    'widgetBaseUrl',
+    'route',
+    'inFullscreenMode',
+
+    'redirectUrl',
+    'widgetVersion',
+
+    'callbackUrl',
+    'loginUrl',
+    'state'
+];
+
 const DEFAULT_CONFIG = {
-    errorHandler: function (a) {
-    },
-    loginPassValidator: function (a, b) {
-        return true;
-    },
-    isMarkupSocialsHandlersEnabled: false,
     apiUrl: 'https://login.xsolla.com/api/',
-    maxXLClickDepth: 20,
     onlyWidgets: false,
     defaultLoginUrl: 'https://xl-widget.xsolla.com/auth.html',
     popupBackgroundColor: 'rgb(187, 187, 187)',
@@ -38,7 +52,8 @@ const DEFAULT_CONFIG = {
     widgetBaseUrl: 'https://xl-widget.xsolla.com/',
     route: ROUTES.LOGIN,
     compact: false,
-    inFullscreenMode: false
+    inFullscreenMode: false,
+    response_type: 'code'
 };
 
 const INVALID_LOGIN_ERROR_CODE = 1;
@@ -198,7 +213,14 @@ class XL {
         }
     };
 
-    getIframeSrc(options = {}) {
+    /**
+     * @deprecated use getLink instead
+     */
+    getIframeSrc() {
+        return this.getLink.apply(this, arguments);
+    }
+
+    getLink(options = {}) {
         let widgetBaseUrl = options.widgetBaseUrl || this.config.widgetBaseUrl;
 
         if (widgetBaseUrl.substr(-1) !== '/') {
@@ -209,12 +231,20 @@ class XL {
 
         let src = widgetBaseUrl + route + '?widget_sdk_version=' + version + '&projectId=' + this.getProjectId();
 
-        if (this.config.locale) {
-            src = src + '&locale=' + this.config.locale;
+        let useOAuth2 = false;
+
+        // Fields appended by loop
+        // locale, fields, theme, compact, client_id, redirect_uri, response_type, state, externalWindow
+        for (const option of Object.keys(this.config)) {
+            if (!IGNORELIST.includes(option)) {
+                const snakeOption = toSnakeCase(option);
+                if (!useOAuth2 && snakeOption === 'client_id') {
+                    useOAuth2 = true;
+                }
+                src += `&${snakeOption}=${encodeURIComponent(this.config[option])}`
+            }
         }
-        if (this.config.fields) {
-            src = src + '&fields=' + this.config.fields;
-        }
+
         const redirectUrl = this.getRedirectURL();
         if (redirectUrl) {
             src = src + '&redirectUrl=' + encodeURIComponent(redirectUrl);
@@ -226,24 +256,18 @@ class XL {
             src = src + '&login_url=' + encodeURIComponent(callbackUrl);
         }
 
-        const theme = this.getTheme();
-        if (theme) {
-            src = src + '&theme=' + encodeURIComponent(theme);
-        }
-
-        const {externalWindow} = this.config;
+        const {externalWindow, state} = this.config;
         if (externalWindow) {
             src = src + '&external_window=' + encodeURIComponent(externalWindow);
+        }
+
+        if (useOAuth2) {
+            src += `&state=${state || Math.random().toString(36).substring(2)}`
         }
 
         const widgetVersion = this.config.widgetVersion;
         if (widgetVersion) {
             src += '&version=' + encodeURIComponent(widgetVersion);
-        }
-
-        const compact = this.config.compact;
-        if (compact) {
-            src += '&compact=' + encodeURIComponent(compact);
         }
 
         return src;
