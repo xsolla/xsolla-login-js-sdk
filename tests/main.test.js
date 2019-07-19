@@ -161,6 +161,29 @@ describe('Get iframe source', function () {
         expect(decodeURIComponent(defaultUrl.query.response_type)).toBe(TEST_CONFIG.responseType);
     });
 
+    it('should not contain project_id', () => {
+        main.init({
+            clientId: 'YOUR CLIENT ID',
+            redirectUri: 'http://localhost:8888/callback',
+            projectId: 'YOUR PROJECT ID'
+        });
+
+        const defaultUrl = ParseUrl(main.getLink(), true);
+
+        expect(decodeURIComponent(defaultUrl.query.project_id)).toBe("undefined");
+    });
+
+    it('should not contain compact', () => {
+        main.init({
+            clientId: 'YOUR CLIENT ID',
+            redirectUri: 'http://localhost:8888/callback',
+            projectId: 'YOUR PROJECT ID'
+        });
+        const defaultUrl = ParseUrl(main.getLink(), true);
+
+        expect(decodeURIComponent(defaultUrl.query.compact)).toBe("undefined");
+    });
+
     it('response_type should by "code" by default', () => {
         main.init({
             projectId: 'test',

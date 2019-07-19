@@ -4,15 +4,29 @@
     <meta charset="UTF-8">
     <title>OAuth 2</title>
     <script type="application/javascript" src="./../dist/xl.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, Roboto, Open Sans, Helvetica Neue, sans-serif;
+            background-color: #f6faff;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Xsolla login widget</h1>
-    <a id="xsolla-login">Log me in</a>
+    <div id="container">
+        <h1>Xsolla Login widget</h1>
+        <a id="xsolla-login">Log me in</a>
+    </div>
 
     <script>
         window.onload = function () {
             XL.init({
-                clientId: 1,
+                clientId: 'YOUR CLIENT ID',
                 redirectUri: 'http://localhost:8888/callback',
                 projectId: 'YOUR PROJECT ID'
             });

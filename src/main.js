@@ -36,10 +36,11 @@ const IGNORELIST = [
 
     'redirectUrl',
     'widgetVersion',
+    'projectId',
 
     'callbackUrl',
     'loginUrl',
-    'state'
+    'state',
 ];
 
 const DEFAULT_CONFIG = {
@@ -51,7 +52,6 @@ const DEFAULT_CONFIG = {
     preloader: '<div></div>',
     widgetBaseUrl: 'https://xl-widget.xsolla.com/',
     route: ROUTES.LOGIN,
-    compact: false,
     inFullscreenMode: false,
     response_type: 'code'
 };
