@@ -229,7 +229,7 @@ class XL {
 
         const route = options.route || this.config.route;
 
-        let src = widgetBaseUrl + route + '?widget_sdk_version=' + version + '&projectId=' + this.getProjectId();
+        let src = widgetBaseUrl + route + '?projectId=' + encodeURIComponent(this.getProjectId()) + '&widget_sdk_version=' + version;
 
         let useOAuth2 = false;
 
@@ -262,7 +262,7 @@ class XL {
         }
 
         if (useOAuth2) {
-            src += `&state=${state || Math.random().toString(36).substring(2)}`
+            src += `&state=${encodeURIComponent(state || Math.random().toString(36).substring(2))}`
         }
 
         const widgetVersion = this.config.widgetVersion;

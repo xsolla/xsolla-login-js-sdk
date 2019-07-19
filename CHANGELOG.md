@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.3 - 2019-07-19
+
+- [feat]: Implemented OAuth 2.0 authentication 
+  
 ## 2.1.2 - 2019-07-04
 
 - [fix] Last custom theme is used instead of the default now.
