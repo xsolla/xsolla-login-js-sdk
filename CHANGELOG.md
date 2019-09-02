@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.4 - 2019-10-08
+
+- [chore]: Bump version
+
 ## 2.2.3 - 2019-07-19
 
 - [feat]: Implemented OAuth 2.0 authentication 

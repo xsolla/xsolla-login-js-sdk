@@ -1,0 +1,30 @@
+image: node:8.15.0
+
+stages:
+  - tests
+  - trigger
+
+Unit:
+  stage: tests
+  script:
+    - npm i
+    - npm run test
+  tags:
+    - devops
+  only:
+    - merge_requests
+  except:
+    - branches
+
+CI pipleine:
+  image: appropriate/curl
+  stage: trigger
+  only:
+    - /^v.*/
+  script:
+    - curl --request POST
+           -k
+           --form "token=$CI_JOB_TOKEN"
+           --form ref=master
+           --form "variables[REF_NAME]=$CI_COMMIT_REF_NAME"
+           $PIPELINE_TRIGGER_URL
