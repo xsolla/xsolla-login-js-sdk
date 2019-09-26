@@ -21,6 +21,8 @@ const ROUTES = {
     ALL_SOCIALS: 'other',
     SOCIALS_LOGIN: 'socials',
     USERNAME_LOGIN: 'username-login',
+    ALL_SOCIALS_LOGIN: 'socials-login',
+    SOCIALS: 'all-socials',
 };
 
 const IGNORELIST = [
