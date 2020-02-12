@@ -41,7 +41,7 @@ bower install xsolla-login-js-sdk
 ```
 * If the package is not connected, add the following code to the `<head>` tag of the HTML-page where the widget will be placed:
 ```js
-<script src="https://cdn.xsolla.net/xsolla-login-widget/sdk/2.2.4/xl.min.js"></script>
+<script src="https://cdn.xsolla.net/xsolla-login-widget/sdk/2.2.5/xl.min.js"></script>
 ```
 
 ### Step 2: Initializing Widget

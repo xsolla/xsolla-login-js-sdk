@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.5 - 2020-02-12
+
+- [chore]: Updated docs
+
 ## 2.2.4 - 2019-10-08
 
 - [chore]: Bump version
