@@ -29,29 +29,29 @@ See [documentation](https://developers.xsolla.com/doc/login/) to find more.
 
 This library allows you to quickly integrate Xsolla Login Widget with your website in following steps:
 * [Connecting SDK](#step-1-connecting-sdk)
-* [Initializing widget](#step-2-initializing-widget)
-* [Choosing the widget placing](#step-3-choosing-the-widget-placing)
+* [Initializing Widget](#step-2-initializing-widget)
+* [Choosing the Widget Placing](#step-3-choosing-the-widget-placing)
 
 ### Step 1: Connecting SDK
 
 Connect Xsolla Login Javascript SDK using one of the following methods:
 * If the project uses [Bower](http://bower.io), launch the console and run
-```
+```shell script
 bower install xsolla-login-js-sdk
 ```
 * If the package is not connected, add the following code to the `<head>` tag of the HTML-page where the widget will be placed:
-```js
+```html
 <script src="https://cdn.xsolla.net/xsolla-login-widget/sdk/2.2.5/xl.min.js"></script>
 ```
 
 ### Step 2: Initializing Widget
 
 Add the widget initialization code to the `<body>` tag.
-```js
+```html
 <script type="text/javascript">
 XL.init({
-  projectId: '{Login ID}',
-  callbackUrl: '{callbackUrl}',
+  projectId: '[Login ID]',
+  callbackUrl: '[callbackUrl]',
   locale: 'en_US'
 });
 </script>
@@ -68,7 +68,7 @@ XL.init({
   &nbsp;&nbsp;&nbsp;&nbsp; `string`  
   URL to redirect the user to after registration/authentication/password reset. Must be identical to one of the **Callback URL** specified in Publisher Account in Login settings. **Required** if there are several Callback URLs.
 
-  You can pass several URL of the local server to make the widget available to the local build.
+  You can pass several URL of the local server to make the widget available to the local build. For example `https://localhost:9000`.
 
  ------------------------------------------------------------------
   **locale**  
@@ -77,7 +77,7 @@ XL.init({
   * *language code*: language code in the [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format;
   * *country code*: country/region code in the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.
 
-  The list of social networks will be sorted from most to least used, according to the variable value.
+  The language of the widget interface. Also used for sorting social networks by the frequency of use in the chosen region.
 
  ------------------------------------------------------------------
   **fields**  
@@ -103,15 +103,14 @@ XL.init({
 
 ### Step 3: Choosing the Widget Placing
 
-Choose the widget placing on the site page:
-* [Fullscreen mode](#fullscreen-mode)
-* [Block on the page](#block-on-the-page)
+Choose the widget placing on the website start page:
+* [Fullscreen Mode](#fullscreen-mode)
+* [Block on the Page](#block-on-the-page)
 
 #### Fullscreen Mode
 
-Add the button with the on-click event and the `XL.show()` function to the site.
-
-``` html
+Add the button with the `on-click` event and the `XL.show()` function to the site.
+```html
 <button onclick="XL.show()">Fullscreen widget</button>
 ```
 
@@ -120,14 +119,12 @@ The fullscreen mode is closed by clicking outside the widget area.
 #### Block on the Page
 
 Add the block with the widget to the `<body>` tag and set the block ID.
-
-``` html
+```html
 <div id="xl_auth"></div>
 ```
 
 Add the code and pass the parameter values as described below.
-
-``` js
+```html
 <script type="text/javascript">
 var element_id = 'xl_auth';
 var options = {
@@ -171,14 +168,16 @@ XL.AuthWidget(element_id, options);
 
  --------------------------------------------------------------------------------  
 
-
 ## Usage
 
 If you have already integrated Login, you can also try additional features of Xsolla Login Widget:
-* [Customizing widget style](#customizing-widget-style)
-* [Tracking widget events](#tracking-widget-events)
+* [Customizing Widget Style](#customizing-widget-style)
+* [Tracking Widget Events](#tracking-widget-events)
 
 ### Customizing Widget Style
+
+By default, the widget looks like this:  
+<img src="https://cdn3.xsolla.com/img/misc/images/08ef59d6c3bf6b3c133854cc579423fd.png" width="75%" title="Widget by default">
 
 You can customize the widget style by changing the following characteristics of its elements:
 * Location on the screen
@@ -198,7 +197,6 @@ To customize:
 
 For further widget UI customization, repeat steps 4–6.
 
-
 ---
 **NOTE**
 
@@ -206,13 +204,12 @@ After publication, the widget will be changed for all the projects it was connec
 
 ---  
 
-
 ### Tracking Widget Events
 
 You can collect widget statistics on the following events:
-* [Loading widget](#loading-widget)
-* [Closing widget](#closing-widget)
-* [Sending the registration confirmation email](#sending-the-registration-confirmation-email)
+* [Loading Widget](#loading-widget)
+* [Closing Widget](#closing-widget)
+* [Sending the Registration Confirmation Email](#sending-the-registration-confirmation-email)
 
 To start tracking the event, initialize and process the action as described below.
 
