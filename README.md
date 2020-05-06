@@ -8,29 +8,31 @@ Currently SDK supports following types of authorization:
 On this page you can see:
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Integrating of the Widget](#integrating-of-the-widget)
-	- [Step 1: Connecting SDK](#step-1-connecting-sdk)
-	- [Step 2: Initializing Widget](#step-2-initializing-widget)
-	- [Step 3: Choosing the Widget Placing](#step-3-choosing-the-widget-placing)
-		- [Fullscreen Mode](#fullscreen-mode)
-		- [Block on the Page](#block-on-the-page)
-- [Usage](#usage)
-	- [Customizing Widget Style](#customizing-widget-style)
-	- [Tracking Widget Events](#tracking-widget-events)
-		- [Loading Widget](#loading-widget)
-		- [Closing Widget](#closing-widget)
-		- [Sending the Registration Confirmation Email](#sending-the-registration-confirmation-email)
+- [Xsolla Login Javascript SDK](#xsolla-login-javascript-sdk)
+	- [Integrating Widget](#integrating-widget)
+		- [Step 1: Connecting SDK](#step-1-connecting-sdk)
+		- [Step 2: Initializing Widget](#step-2-initializing-widget)
+		- [Step 3: Choosing Widget Placing](#step-3-choosing-widget-placing)
+			- [Fullscreen Mode](#fullscreen-mode)
+			- [Block on the Page](#block-on-the-page)
+	- [Usage](#usage)
+		- [Connecting OAuth 2.0 Protocol](#connecting-oauth-20-protocol)
+		- [Customizing Widget Style](#customizing-widget-style)
+		- [Tracking Widget Events](#tracking-widget-events)
+			- [Loading Widget](#loading-widget)
+			- [Closing Widget](#closing-widget)
+			- [Sending the Registration Confirmation Email](#sending-the-registration-confirmation-email)
 
 <!-- /TOC -->
 
 See [documentation](https://developers.xsolla.com/doc/login/) to find more.
 
-## Integrating of the Widget
+## Integrating Widget
 
 This library allows you to quickly integrate Xsolla Login Widget with your website in following steps:
 * [Connecting SDK](#step-1-connecting-sdk)
 * [Initializing Widget](#step-2-initializing-widget)
-* [Choosing the Widget Placing](#step-3-choosing-the-widget-placing)
+* [Choosing Widget Placing](#step-3-choosing-widget-placing)
 
 ### Step 1: Connecting SDK
 
@@ -73,11 +75,13 @@ XL.init({
  ------------------------------------------------------------------
   **locale**  
   &nbsp;&nbsp;&nbsp;&nbsp; `string`  
-  Region in the `<language code>_<country code>` format, where:
+  Language of the widget interface and region in the `<language code>_<country code>` format where:
   * *language code*: language code in the [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format;
   * *country code*: country/region code in the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.
 
-  The language of the widget interface. Also used for sorting social networks by the frequency of use in the chosen region.
+  The following locales can be specified: Arabic (ar_AE), Bulgarian (bg_BG), Czech (cz_CZ), German (de_DE), Spanish (es_ES), French (fr_FR), Hebrew (he_IL), Italian (it_IT), Japanese (ja_JP), Korean (ko_KR), Polish (pl_PL), Portuguese (pt_BR), Romanian (ro_RO), Russian (ru_RU), Thai (th_TH), Turkish (tr_TR), Vientamese (vi_VN), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW).
+
+  Also used for sorting social networks by the frequency of use in the chosen region.
 
  ------------------------------------------------------------------
   **fields**  
@@ -92,7 +96,7 @@ XL.init({
  ------------------------------------------------------------------
   **popupBackgroundColor**  
   &nbsp;&nbsp;&nbsp;&nbsp; `string`  
-  Widget background color in the **fullscreen** mode. The value can be in any of the CSS color formats. Default is rgba(50, 150, 150, 0.1).
+  Widget background color in the **fullscreen** mode. The value can be in any of the CSS color formats. Default is RGBA(50, 150, 150, 0.1).
 
  ------------------------------------------------------------------
   **iframeZIndex**  
@@ -101,7 +105,7 @@ XL.init({
 
 --------------------------------------------------------------------------------  
 
-### Step 3: Choosing the Widget Placing
+### Step 3: Choosing Widget Placing
 
 Choose the widget placing on the website start page:
 * [Fullscreen Mode](#fullscreen-mode)
@@ -171,8 +175,13 @@ XL.AuthWidget(element_id, options);
 ## Usage
 
 If you have already integrated Login, you can also try additional features of Xsolla Login Widget:
+* [Connecting OAuth 2.0 Protocol](#connecting-oauth-20-protocol)
 * [Customizing Widget Style](#customizing-widget-style)
 * [Tracking Widget Events](#tracking-widget-events)
+
+### Connecting OAuth 2.0 Protocol
+
+Xsolla Login Widget supports the OAuth 2.0 protocol-based user authentication. Follow the [recipe](https://developers.xsolla.com/recipes/login/connecting-oauth2/#recipes_connecting_oauth2_how_to_get_it_updating_integration_via_widget) to set it up.
 
 ### Customizing Widget Style
 
