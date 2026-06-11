@@ -1,10 +1,22 @@
-> [!WARNING]
-> **This repository is deprecated and is no longer actively maintained.**
+> [!CAUTION]
+> ## ⚠️ This repository is deprecated — use Xsolla SDK 3 instead
 >
-> If you arrived here from a web search, you are looking at a legacy Xsolla Login JavaScript widget SDK (last release: v2.2.6). Use the current **Xsolla SDK** instead — it provides up-to-date web payment integrations, active support, and compatibility with modern JavaScript environments.
+> **This is a legacy Xsolla Login JavaScript widget SDK (last release: v2.2.6) that is no longer actively maintained or updated.**
+> If you arrived here from a web search, do not use this repository for new integrations.
 >
-> - 📖 **[Xsolla SDK Documentation](https://developers.xsolla.com/sdk/)** — get started with the current integration
-> - 🔭 **[SDK Explorer](https://developers.xsolla.com/sdk/demo/)** — try the SDK interactively before writing any code
+> **The current recommended version is [Xsolla SDK 3](https://developers.xsolla.com/sdk/)**, which provides:
+> - ✅ Up-to-date authentication and payment integrations for web, mobile, and desktop
+> - ✅ Active development with ongoing bug fixes, new features, and platform updates
+> - ✅ 700+ payment methods across 200+ countries and territories
+> - ✅ Modern JavaScript/TypeScript compatibility
+>
+> **Get started with SDK 3:**
+> | Resource | Link |
+> |---|---|
+> | 📖 SDK 3 Documentation | https://developers.xsolla.com/sdk/ |
+> | 🔭 SDK Explorer (try before you code) | https://developers.xsolla.com/sdk/demo/ |
+>
+> _Do not start new integrations on this repository._
 
 # Xsolla Login Javascript SDK
 
