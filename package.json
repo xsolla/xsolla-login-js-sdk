@@ -36,7 +36,7 @@
     "gulp-util": "3.0.6",
     "jasmine": "^2.4.1",
     "jest": "^24.8.0",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "static-server": "2.2.1",
     "url-parse": "^1.4.7",
     "vinyl-buffer": "^1.0.1",
