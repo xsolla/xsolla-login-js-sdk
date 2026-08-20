@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "to-snake-case": "^1.0.0"
   },
